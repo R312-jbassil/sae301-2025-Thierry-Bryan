@@ -1,4 +1,4 @@
-- Nom: Thierry
+- Nom: Thierr
 - Prénom: Bryan
 - URL pocketbase: 
 - URL:
