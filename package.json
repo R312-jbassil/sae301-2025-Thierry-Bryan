@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/node": "^9.5.0",
-    "astro": "^5.15.3"
+    "astro": "^5.15.3",
+    "pocketbase": "^0.26.3"
   }
 }

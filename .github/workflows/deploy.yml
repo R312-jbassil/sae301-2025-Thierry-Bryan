@@ -30,7 +30,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
+          port: 22044
           source: "dist/*"
           target: "/var/www/tavue/"
           strip_components: 1
