@@ -1,0 +1,228 @@
+/* === GOOGLE FONTS === */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Parisienne&display=swap');
+
+/* === TAILWINDCSS & DAISYUI === */
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* === THÈME FRANÇAIS MODERNE === */
+@theme {
+  --font-primary: "Parisienne", cursive;
+  --font-secondary: "Montserrat", sans-serif;
+  
+  /* Couleurs principales */
+  --bleu: #003366;
+  --blanc: #ffffff;
+  --rouge: #830000;
+  --noir: #161616;
+  
+  /* Couleurs plus claires */
+  --bleu-clair: #004d99;
+  --rouge-clair: #a60000;
+  --gris-clair: #f8f9fa;
+  --gris: #e9ecef;
+}
+
+/* === CLASSES UTILITAIRES POUR LES COULEURS === */
+.text-bleu {
+  color: var(--bleu);
+}
+
+.text-rouge {
+  color: var(--rouge);
+}
+
+.text-noir {
+  color: var(--noir);
+}
+
+.text-blanc {
+  color: var(--blanc);
+}
+
+.text-bleu-clair {
+  color: var(--bleu-clair);
+}
+
+.text-rouge-clair {
+  color: var(--rouge-clair);
+}
+
+/* === THÈME DAISYUI "FRENCH-MODERN" === */
+[data-theme="french-modern"] {
+  /* Couleurs principales */
+  --p: #003366;        /* Primary - Bleu */
+  --pc: #ffffff;       /* Primary content - Blanc */
+  --s: #830000;        /* Secondary - Rouge */
+  --sc: #ffffff;       /* Secondary content - Blanc */
+  --a: #004d99;        /* Accent - Bleu clair */
+  --ac: #ffffff;       /* Accent content - Blanc */
+  
+  /* Couleurs neutres */
+  --n: #161616;        /* Neutral - Noir */
+  --nc: #ffffff;       /* Neutral content - Blanc */
+  
+  /* Couleurs de base */
+  --b1: #ffffff;       /* Base 100 - Blanc */
+  --b2: #f8f9fa;       /* Base 200 - Gris clair */
+  --b3: #e9ecef;       /* Base 300 - Gris */
+  --bc: #161616;       /* Base content - Noir */
+  
+  /* États */
+  --su: #28a745;       /* Success - Vert */
+  --suc: #ffffff;      /* Success content - Blanc */
+  --wa: #ffc107;       /* Warning - Jaune */
+  --wac: #161616;      /* Warning content - Noir */
+  --er: #830000;       /* Error - Rouge */
+  --erc: #ffffff;      /* Error content - Blanc */
+  --in: #003366;       /* Info - Bleu */
+  --inc: #ffffff;      /* Info content - Blanc */
+  
+  /* Formes */
+  --rounded-box: 0.5rem;
+  --rounded-btn: 0.375rem;
+  --rounded-badge: 1rem;
+  
+  /* Animations */
+  --animation-btn: 0.25s;
+  --animation-input: 0.2s;
+}
+
+/* === STYLES DE BASE === */
+@layer base {
+  body {
+    font-family: var(--font-secondary);
+    background-color: var(--blanc);
+    color: var(--noir);
+  }
+  
+  /* Typographie */
+  .font-primary {
+    font-family: var(--font-primary);
+  }
+  
+  .font-secondary {
+    font-family: var(--font-secondary);
+  }
+  
+  /* Titres avec Parisienne */
+  h1, .h1 {
+    font-family: var(--font-primary);
+    font-size: 3.5rem;
+    color: var(--bleu);
+    font-weight: 400;
+  }
+  
+  h2, .h2 {
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    color: var(--bleu);
+    font-weight: 400;
+  }
+  
+  h3, .h3 {
+    font-family: var(--font-secondary);
+    font-size: 1.875rem;
+    color: var(--bleu);
+    font-weight: 600;
+  }
+  
+  /* Paragraphes avec Montserrat */
+  p, .text-body {
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--noir);
+  }
+}
+
+/* === COMPOSANTS PERSONNALISÉS === */
+@layer components {
+  /* Boutons français */
+  .btn-french {
+    background-color: var(--bleu);
+    color: var(--blanc);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-french:hover {
+    background-color: var(--bleu-clair);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .btn-french-secondary {
+    background-color: var(--rouge);
+    color: var(--blanc);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-french-secondary:hover {
+    background-color: var(--rouge-clair);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .btn-french-outline {
+    background-color: transparent;
+    color: var(--bleu);
+    border: 2px solid var(--bleu);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-french-outline:hover {
+    background-color: var(--bleu);
+    color: var(--blanc);
+  }
+  
+  /* Cards français */
+  .card-french {
+    background-color: var(--blanc);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem;
+    border: 1px solid var(--gris-clair);
+    transition: all 0.3s ease;
+  }
+  
+  .card-french:hover {
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+  }
+  
+  /* Header avec dégradé subtil */
+  .header-french {
+    background: linear-gradient(135deg, var(--blanc) 0%, var(--gris-clair) 100%);
+    border-bottom: 1px solid var(--gris);
+  }
+  
+  /* Section hero avec accent bleu subtil */
+  .hero-french {
+    background: linear-gradient(135deg, 
+      var(--blanc) 0%, 
+      rgba(0, 51, 102, 0.02) 50%, 
+      var(--blanc) 100%);
+  }
+  
+  /* Séparateur tricolore bleu blanc rouge */
+  .divider-french {
+    height: 3px;
+    background: linear-gradient(90deg, 
+      var(--bleu) 0%, 
+      var(--blanc) 50%, 
+      var(--rouge) 100%);
+    border-radius: 2px;
+  }
+}

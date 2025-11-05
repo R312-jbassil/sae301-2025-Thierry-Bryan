@@ -1,11 +1,86 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// filepath: src/pages/index.astro
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/ui/Button.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="TaVue - Accueil">
+  <div class="min-h-screen bg-base-100">
+    <!-- Hero Section -->
+    <section class="hero-french py-20">
+      <div class="container mx-auto px-6 text-center">
+        <h1 class="text-6xl mb-6">TaVue</h1>
+        <p class="text-xl max-w-2xl mx-auto mb-8">
+          Créez vos lunettes sur-mesure avec notre configurateur français moderne
+        </p>
+        
+        <!-- Divider français -->
+        <div class="divider-french w-32 mx-auto mb-8"></div>
+        
+        <!-- Boutons avec notre composant français -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button variant="fixed">
+            Commencer la configuration
+          </Button>
+          <Button variant="flexible">
+            Découvrir nos modèles
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cards de démonstration -->
+    <section class="py-16 px-6">
+      <div class="container mx-auto">
+        <h2 class="text-center mb-12">Nos Services</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <!-- Card 1 -->
+          <div class="card-french">
+            <div class="card-body items-center text-center">
+              <h3 class="card-title mb-4">Configuration 3D</h3>
+              <p>Visualisez vos lunettes en temps réel avec notre configurateur avancé</p>
+              <div class="card-actions justify-end mt-4">
+                <Button variant="fixed">Découvrir</Button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card-french">
+            <div class="card-body items-center text-center">
+              <h3 class="card-title mb-4">Matériaux Premium</h3>
+              <p>Sélectionnez parmi notre gamme de matériaux haut de gamme</p>
+              <div class="card-actions justify-end mt-4">
+                <Button variant="flexible">Explorer</Button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card-french">
+            <div class="card-body items-center text-center">
+              <h3 class="card-title mb-4">Livraison Rapide</h3>
+              <p>Recevez vos lunettes personnalisées en quelques jours</p>
+              <div class="card-actions justify-end mt-4">
+                <Button variant="fixed">Commander</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Test de typographie -->
+    <section class="bg-base-200 py-16 px-6">
+      <div class="container mx-auto text-center max-w-4xl">
+        <h2 class="mb-6 text-rouge">Élégance Française</h2>
+        <p class="text-lg leading-relaxed">
+          Notre savoir-faire français au service de votre style. Découvrez l'alliance parfaite 
+          entre tradition artisanale et innovation technologique pour créer des lunettes uniques 
+          qui vous ressemblent.
+        </p>
+      </div>
+    </section>
+  </div>
 </Layout>

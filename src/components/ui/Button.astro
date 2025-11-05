@@ -1,0 +1,102 @@
+---
+// filepath: src/components/ui/Button.astro
+export interface Props {
+  variant?: "fixed" | "flexible";
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  loading?: boolean;
+  href?: string;
+  class?: string;
+}
+
+const {
+  variant = "fixed",
+  type = "button",
+  disabled = false,
+  loading = false,
+  href,
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class={`btn-french ${variant === "flexible" ? "btn-flexible" : "btn-fixed"} ${className}`}
+  type={href ? undefined : type}
+  disabled={disabled || loading}
+  href={href}
+  {...rest}
+>
+  {loading && (
+    <svg class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+  )}
+  <slot />
+</Tag>
+
+<style>
+  /* Style de base pour tous les boutons */
+  .btn-french {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: var(--font-secondary);
+    /* Empêche tout mouvement et ombre */
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Variante responsive - Hauteur fixe, largeur adaptative */
+  .btn-fixed {
+    display: flex;
+    min-width: 120px;
+    height: 48px;
+    padding: 0 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
+    background: var(--bleu); /* #036 */
+    width: auto;
+  }
+  
+  .btn-fixed:hover {
+    background: var(--rouge);
+    transform: none; /* Pas de mouvement au hover */
+    box-shadow: none; /* Pas d'ombre au hover */
+  }
+  
+  /* Variante flexible - Hauteur fixe mais largeur adaptative */
+  .btn-flexible {
+    display: flex;
+    height: 48px;
+    padding: 0 16px;
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 14px;
+    background: var(--bleu); /* #036 */
+  }
+  
+  .btn-flexible:hover {
+    background: var(--rouge);
+    transform: none; /* Pas de mouvement au hover */
+    box-shadow: none; /* Pas d'ombre au hover */
+  }
+  
+  /* État désactivé */
+  .btn-french:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .btn-french:disabled:hover {
+    background: var(--bleu) !important;
+  }
+</style>
