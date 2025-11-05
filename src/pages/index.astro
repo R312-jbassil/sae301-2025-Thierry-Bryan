@@ -11,20 +11,19 @@ import Button from "../components/ui/Button.astro";
       <div class="container mx-auto px-6 text-center">
         <h1 class="text-6xl mb-6">TaVue</h1>
         <p class="text-xl max-w-2xl mx-auto mb-8">
-          Créez vos lunettes sur-mesure avec notre configurateur français moderne
+          Créez vos lunettes sur-mesure avec notre configurateur français
+          moderne
         </p>
-        
+
         <!-- Divider français -->
         <div class="divider-french w-32 mx-auto mb-8"></div>
-        
+
         <!-- Boutons avec notre composant français -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button variant="fixed">
-            Commencer la configuration
-          </Button>
-          <Button variant="flexible">
-            Découvrir nos modèles
-          </Button>
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-center items-center"
+        >
+          <Button variant="fixed"> Commencer la configuration </Button>
+          <Button variant="flexible"> Découvrir nos modèles </Button>
         </div>
       </div>
     </section>
@@ -33,13 +32,16 @@ import Button from "../components/ui/Button.astro";
     <section class="py-16 px-6">
       <div class="container mx-auto">
         <h2 class="text-center mb-12">Nos Services</h2>
-        
+
         <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <!-- Card 1 -->
           <div class="card-french">
             <div class="card-body items-center text-center">
               <h3 class="card-title mb-4">Configuration 3D</h3>
-              <p>Visualisez vos lunettes en temps réel avec notre configurateur avancé</p>
+              <p>
+                Visualisez vos lunettes en temps réel avec notre configurateur
+                avancé
+              </p>
               <div class="card-actions justify-end mt-4">
                 <Button variant="fixed">Découvrir</Button>
               </div>
@@ -76,9 +78,9 @@ import Button from "../components/ui/Button.astro";
       <div class="container mx-auto text-center max-w-4xl">
         <h2 class="mb-6 text-rouge">Élégance Française</h2>
         <p class="text-lg leading-relaxed">
-          Notre savoir-faire français au service de votre style. Découvrez l'alliance parfaite 
-          entre tradition artisanale et innovation technologique pour créer des lunettes uniques 
-          qui vous ressemblent.
+          Notre savoir-faire français au service de votre style. Découvrez
+          l'alliance parfaite entre tradition artisanale et innovation
+          technologique pour créer des lunettes uniques qui vous ressemblent.
         </p>
       </div>
     </section>
@@ -87,15 +89,20 @@ import Button from "../components/ui/Button.astro";
 
 <script>
   // Gérer les redirections de vérification d'email sur la page d'accueil
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     // Vérifier si l'URL contient un hash de vérification
-    if (window.location.hash && window.location.hash.includes('#/auth/confirm-verification/')) {
-      const tokenMatch = window.location.hash.match(/#\/auth\/confirm-verification\/(.+)/);
-      
+    if (
+      window.location.hash &&
+      window.location.hash.includes("#/auth/confirm-verification/")
+    ) {
+      const tokenMatch = window.location.hash.match(
+        /#\/auth\/confirm-verification\/(.+)/
+      );
+
       if (tokenMatch) {
         const token = tokenMatch[1];
-        console.log('🔄 Redirection depuis accueil vers vérification:', token);
-        
+        console.log("🔄 Redirection depuis accueil vers vérification:", token);
+
         // Rediriger vers notre page de vérification
         window.location.href = `/auth/confirm-verification/${token}`;
       }
