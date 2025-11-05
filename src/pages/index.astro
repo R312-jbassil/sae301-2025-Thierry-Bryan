@@ -84,3 +84,21 @@ import Button from "../components/ui/Button.astro";
     </section>
   </div>
 </Layout>
+
+<script>
+  // Gérer les redirections de vérification d'email sur la page d'accueil
+  document.addEventListener('DOMContentLoaded', () => {
+    // Vérifier si l'URL contient un hash de vérification
+    if (window.location.hash && window.location.hash.includes('#/auth/confirm-verification/')) {
+      const tokenMatch = window.location.hash.match(/#\/auth\/confirm-verification\/(.+)/);
+      
+      if (tokenMatch) {
+        const token = tokenMatch[1];
+        console.log('🔄 Redirection depuis accueil vers vérification:', token);
+        
+        // Rediriger vers notre page de vérification
+        window.location.href = `/auth/confirm-verification/${token}`;
+      }
+    }
+  });
+</script>

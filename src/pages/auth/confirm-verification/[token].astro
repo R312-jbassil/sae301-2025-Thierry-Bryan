@@ -1,0 +1,148 @@
+---
+// filepath: src/pages/auth/confirm-verification/[token].astro
+import Layout from "../../../layouts/Layout.astro";
+import pb from "../../../utils/pb";
+
+// Récupérer le token depuis les paramètres de route
+const { token } = Astro.params;
+
+let verificationResult = {
+  success: false,
+  error: null as string | null
+};
+
+// Vérification côté serveur si le token existe
+if (token) {
+  try {
+    await pb.collection('users').confirmVerification(token);
+    verificationResult.success = true;
+    console.log('✅ Vérification réussie côté serveur pour:', token);
+  } catch (error: any) {
+    verificationResult.error = error?.message || 'Erreur de vérification';
+    console.error('❌ Erreur de vérification côté serveur:', error);
+  }
+} else {
+  verificationResult.error = 'Token manquant';
+}
+---
+
+<Layout title="Vérification d'email - TaVue">
+  <main class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      
+      <!-- Logo et titre -->
+      <div class="text-center">
+        <img class="mx-auto h-12 w-auto" src="/logo_tavue.svg" alt="TaVue" />
+        <h2 class="mt-6 font-primary text-3xl text-[#003366]">
+          Vérification d'email
+        </h2>
+      </div>
+
+      <!-- Container de résultat -->
+      <div class="bg-white shadow-md rounded-xl p-8">
+        
+        {verificationResult.success ? (
+          <!-- Succès -->
+          <div class="text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <h3 class="font-secondary text-lg font-medium text-gray-900 mb-2">
+              Email vérifié avec succès !
+            </h3>
+            <p class="font-secondary text-sm text-gray-600 mb-6">
+              Votre adresse email a été confirmée. Vous pouvez maintenant utiliser toutes les fonctionnalités de TaVue.
+            </p>
+            <div class="space-y-3">
+              <a 
+                href="/auth?tab=login&verified=true" 
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#003366] hover:bg-[#830000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+              >
+                Se connecter maintenant
+              </a>
+              <a 
+                href="/" 
+                class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+              >
+                Retour à l'accueil
+              </a>
+            </div>
+          </div>
+        ) : (
+          <!-- Erreur -->
+          <div class="text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+              <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </div>
+            <h3 class="font-secondary text-lg font-medium text-gray-900 mb-2">
+              Erreur de vérification
+            </h3>
+            <p class="font-secondary text-sm text-gray-600 mb-2">
+              {verificationResult.error}
+            </p>
+            <p class="font-secondary text-xs text-gray-500 mb-6">
+              Le lien peut être expiré ou déjà utilisé.
+            </p>
+            <div class="space-y-3">
+              <a 
+                href="/auth?tab=signup&resend=true" 
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#003366] hover:bg-[#830000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+              >
+                Demander un nouveau lien
+              </a>
+              <a 
+                href="/auth?tab=login" 
+                class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+              >
+                Essayer de se connecter
+              </a>
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      <!-- Aide -->
+      <div class="text-center">
+        <p class="font-secondary text-xs text-gray-500">
+          Besoin d'aide ? 
+          <a href="mailto:support@tavue.fr" class="text-[#003366] hover:text-[#830000] transition-colors">
+            Contactez notre support
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </main>
+</Layout>
+
+<script>
+  // Notification de succès si vérification réussie
+  document.addEventListener('DOMContentLoaded', () => {
+    const isSuccess = document.querySelector('.bg-green-100');
+    
+    if (isSuccess) {
+      // Afficher une notification de succès
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 font-secondary transition-all duration-300';
+      notification.textContent = '✅ Email vérifié avec succès !';
+      
+      document.body.appendChild(notification);
+      
+      // Supprimer après 5 secondes
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 5000);
+    }
+  });
+</script>
+</Layout>

@@ -1,0 +1,233 @@
+---
+// filepath: src/pages/auth/confirm-verification/index.astro
+import Layout from "../../../layouts/Layout.astro";
+---
+
+<Layout title="Vérification d'email - TaVue">
+  <main class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      
+      <!-- Logo et titre -->
+      <div class="text-center">
+        <img class="mx-auto h-12 w-auto" src="/logo_tavue.svg" alt="TaVue" />
+        <h2 class="mt-6 font-primary text-3xl text-[#003366]">
+          Vérification d'email
+        </h2>
+        <p class="mt-2 font-secondary text-sm text-gray-600">
+          Confirmation de votre adresse email
+        </p>
+      </div>
+
+      <!-- Container de statut -->
+      <div class="bg-white shadow-md rounded-xl p-8">
+        
+        <!-- État de chargement -->
+        <div id="loading-state" class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#003366] mx-auto mb-4"></div>
+          <p class="font-secondary text-gray-600">Vérification en cours...</p>
+        </div>
+
+        <!-- État de succès -->
+        <div id="success-state" class="hidden text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h3 class="font-secondary text-lg font-medium text-gray-900 mb-2">
+            Email vérifié avec succès !
+          </h3>
+          <p class="font-secondary text-sm text-gray-600 mb-6">
+            Votre adresse email a été confirmée. Vous pouvez maintenant utiliser toutes les fonctionnalités de TaVue.
+          </p>
+          <div class="space-y-3">
+            <a 
+              href="/auth?tab=login" 
+              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#003366] hover:bg-[#830000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+            >
+              Se connecter
+            </a>
+            <a 
+              href="/" 
+              class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+            >
+              Retour à l'accueil
+            </a>
+          </div>
+        </div>
+
+        <!-- État d'erreur -->
+        <div id="error-state" class="hidden text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </div>
+          <h3 class="font-secondary text-lg font-medium text-gray-900 mb-2">
+            Erreur de vérification
+          </h3>
+          <p id="error-message" class="font-secondary text-sm text-gray-600 mb-6">
+            Une erreur s'est produite lors de la vérification de votre email.
+          </p>
+          <div class="space-y-3">
+            <button 
+              id="retry-btn"
+              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#003366] hover:bg-[#830000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+            >
+              Réessayer
+            </button>
+            <a 
+              href="/auth?tab=signup" 
+              class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+            >
+              Renvoyer un email de vérification
+            </a>
+          </div>
+        </div>
+
+        <!-- État token manquant -->
+        <div id="missing-token-state" class="hidden text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 mb-4">
+            <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+          </div>
+          <h3 class="font-secondary text-lg font-medium text-gray-900 mb-2">
+            Lien invalide
+          </h3>
+          <p class="font-secondary text-sm text-gray-600 mb-6">
+            Le lien de vérification semble être invalide ou expiré. Veuillez demander un nouveau lien de vérification.
+          </p>
+          <div class="space-y-3">
+            <a 
+              href="/auth?tab=signup" 
+              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#003366] hover:bg-[#830000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+            >
+              Demander une nouvelle vérification
+            </a>
+            <a 
+              href="/" 
+              class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors"
+            >
+              Retour à l'accueil
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Aide -->
+      <div class="text-center">
+        <p class="font-secondary text-xs text-gray-500">
+          Besoin d'aide ? 
+          <a href="mailto:support@tavue.fr" class="text-[#003366] hover:text-[#830000] transition-colors">
+            Contactez notre support
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Récupérer les éléments du DOM
+    const loadingState = document.querySelector('#loading-state');
+    const successState = document.querySelector('#success-state');
+    const errorState = document.querySelector('#error-state');
+    const missingTokenState = document.querySelector('#missing-token-state');
+    const errorMessage = document.querySelector('#error-message');
+    const retryBtn = document.querySelector('#retry-btn');
+
+    // Fonction pour afficher un état
+    function showState(stateElement: Element) {
+      [loadingState, successState, errorState, missingTokenState].forEach(el => {
+        if (el) el.classList.add('hidden');
+      });
+      stateElement?.classList.remove('hidden');
+    }
+
+    // Fonction pour extraire le token de l'URL
+    function getVerificationToken(): string | null {
+      // Essayer de récupérer depuis l'URL hash (format PocketBase)
+      const hash = window.location.hash;
+      const hashMatch = hash.match(/#\/auth\/confirm-verification\/(.+)/);
+      if (hashMatch) {
+        return hashMatch[1];
+      }
+
+      // Essayer de récupérer depuis les paramètres URL
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('token');
+    }
+
+    // Fonction pour vérifier l'email
+    async function verifyEmail(token: string) {
+      try {
+        showState(loadingState!);
+
+        // Import PocketBase
+        const pbModule = await import('../../../utils/pb');
+        const pb = pbModule.default;
+
+        // Confirmer la vérification d'email
+        await pb.collection('users').confirmVerification(token);
+
+        console.log('✅ Email vérifié avec succès');
+        showState(successState!);
+
+      } catch (error: any) {
+        console.error('❌ Erreur lors de la vérification:', error);
+        
+        let errorText = 'Une erreur s\'est produite lors de la vérification.';
+        
+        if (error?.status === 400) {
+          errorText = 'Le lien de vérification est invalide ou a expiré.';
+        } else if (error?.status === 404) {
+          errorText = 'Aucun utilisateur trouvé pour cette vérification.';
+        } else if (error?.message) {
+          errorText = error.message;
+        }
+
+        if (errorMessage) {
+          errorMessage.textContent = errorText;
+        }
+        
+        showState(errorState!);
+      }
+    }
+
+    // Logique principale
+    const token = getVerificationToken();
+    
+    if (!token) {
+      console.log('❌ Token de vérification manquant');
+      showState(missingTokenState!);
+      return;
+    }
+
+    console.log('🔍 Token trouvé, vérification en cours...');
+    
+    // Attendre un peu pour l'UX puis vérifier
+    setTimeout(() => {
+      verifyEmail(token);
+    }, 1000);
+
+    // Gestion du bouton retry
+    retryBtn?.addEventListener('click', () => {
+      if (token) {
+        verifyEmail(token);
+      }
+    });
+
+    // Gérer les changements d'URL (pour les liens hash)
+    window.addEventListener('hashchange', () => {
+      const newToken = getVerificationToken();
+      if (newToken && newToken !== token) {
+        verifyEmail(newToken);
+      }
+    });
+  });
+</script>
+</Layout>

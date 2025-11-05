@@ -1,0 +1,120 @@
+---
+// filepath: src/pages/test-verification.astro
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Test Vérification - TaVue">
+  <main class="min-h-screen bg-gray-50 py-12 px-4">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="font-primary text-3xl text-[#003366] mb-8 text-center">Test du système de vérification</h1>
+      
+      <div class="bg-white rounded-xl shadow-md p-8 space-y-6">
+        
+        <!-- URLs de test -->
+        <div>
+          <h2 class="font-secondary text-lg font-semibold mb-4">Pages de vérification :</h2>
+          <div class="space-y-2">
+            <div>
+              <a href="/auth/confirm-verification/" class="text-blue-600 hover:underline">
+                /auth/confirm-verification/ (page générale)
+              </a>
+            </div>
+            <div>
+              <a href="/auth/confirm-verification/test-token-123" class="text-blue-600 hover:underline">
+                /auth/confirm-verification/test-token-123 (avec token test)
+              </a>
+            </div>
+            <div>
+              <a href="/_/" class="text-green-600 hover:underline">
+                /_/ (page d'interception PocketBase)
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation de lien PocketBase -->
+        <div>
+          <h2 class="font-secondary text-lg font-semibold mb-4">Simulation lien PocketBase :</h2>
+          <div class="space-y-3">
+            <button id="simulate-pb-link" class="w-full bg-[#003366] text-white px-6 py-3 rounded-lg hover:bg-[#830000] transition-colors font-secondary">
+              Simuler lien PocketBase (format /_/)
+            </button>
+            <button id="simulate-pb-direct" class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-secondary">
+              Simuler lien direct (format #/)
+            </button>
+          </div>
+        </div>
+
+        <!-- Test direct -->
+        <div>
+          <h2 class="font-secondary text-lg font-semibold mb-4">Test de vérification directe :</h2>
+          <div class="flex gap-3">
+            <input 
+              type="text" 
+              id="token-input" 
+              placeholder="Token de test (optionnel)"
+              class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#003366] focus:border-transparent"
+            />
+            <button id="test-verification" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-secondary">
+              Tester
+            </button>
+          </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 class="font-secondary font-semibold text-blue-800 mb-2">Instructions :</h3>
+          <ol class="list-decimal list-inside space-y-1 text-blue-700 text-sm">
+            <li>Créez un compte sur <a href="/auth" class="underline">/auth</a></li>
+            <li>Vérifiez votre email pour le lien de vérification</li>
+            <li>Le lien devrait vous rediriger vers nos pages de vérification</li>
+            <li>Ou utilisez les boutons ci-dessus pour tester</li>
+          </ol>
+        </div>
+
+        <!-- Retour -->
+        <div class="text-center">
+          <a href="/auth" class="text-[#003366] hover:text-[#830000] transition-colors font-secondary">
+            ← Retour à l'authentification
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const simulateBtn = document.querySelector('#simulate-pb-link');
+    const testBtn = document.querySelector('#test-verification');
+    const tokenInput = document.querySelector('#token-input') as HTMLInputElement;
+
+    const simulateDirectBtn = document.querySelector('#simulate-pb-direct');
+
+    // Simuler un lien PocketBase (format avec /_/)
+    simulateBtn?.addEventListener('click', () => {
+      // Simuler le format exact que PocketBase génère
+      const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.fake';
+      window.location.href = `/_/#/auth/confirm-verification/${fakeToken}`;
+    });
+
+    // Simuler un lien direct (format #/)
+    simulateDirectBtn?.addEventListener('click', () => {
+      const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.fake';
+      window.location.href = `/#/auth/confirm-verification/${fakeToken}`;
+    });
+
+    // Test de vérification directe
+    testBtn?.addEventListener('click', () => {
+      const token = tokenInput.value || 'test-token-123';
+      window.location.href = `/auth/confirm-verification/${token}`;
+    });
+
+    // Afficher des infos sur l'URL actuelle
+    console.log('URL actuelle:', window.location.href);
+    console.log('Hash:', window.location.hash);
+    console.log('Pathname:', window.location.pathname);
+  });
+</script>
+</Layout>
