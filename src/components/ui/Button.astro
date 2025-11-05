@@ -20,10 +20,23 @@ const {
 } = Astro.props;
 
 const Tag = href ? "a" : "button";
+
+// Classes Tailwind dynamiques
+const baseClasses = "border-none cursor-pointer transition-colors duration-300 text-white font-medium no-underline font-secondary transform-none shadow-none text-sm";
+
+const variantClasses = {
+  fixed: "flex min-w-[100px] h-10 px-4 justify-center items-center rounded-[14px] w-auto",
+  flexible: "flex h-10 px-3 items-center flex-shrink-0 self-stretch rounded-[14px]"
+};
+
+const colorClasses = "bg-[#003366] hover:bg-[#830000]";
+const disabledClasses = disabled ? "opacity-50 cursor-not-allowed hover:bg-[#003366]" : "";
+
+const finalClasses = `${baseClasses} ${variantClasses[variant]} ${colorClasses} ${disabledClasses} ${className}`;
 ---
 
 <Tag
-  class={`btn-french ${variant === "flexible" ? "btn-flexible" : "btn-fixed"} ${className}`}
+  class={finalClasses}
   type={href ? undefined : type}
   disabled={disabled || loading}
   href={href}
@@ -37,66 +50,3 @@ const Tag = href ? "a" : "button";
   )}
   <slot />
 </Tag>
-
-<style>
-  /* Style de base pour tous les boutons */
-  .btn-french {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    color: white;
-    font-weight: 500;
-    text-decoration: none;
-    font-family: var(--font-secondary);
-    /* Empêche tout mouvement et ombre */
-    transform: none;
-    box-shadow: none;
-  }
-  
-  /* Variante responsive - Hauteur fixe, largeur adaptative */
-  .btn-fixed {
-    display: flex;
-    min-width: 120px;
-    height: 48px;
-    padding: 0 24px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 14px;
-    background: var(--bleu); /* #036 */
-    width: auto;
-  }
-  
-  .btn-fixed:hover {
-    background: var(--rouge);
-    transform: none; /* Pas de mouvement au hover */
-    box-shadow: none; /* Pas d'ombre au hover */
-  }
-  
-  /* Variante flexible - Hauteur fixe mais largeur adaptative */
-  .btn-flexible {
-    display: flex;
-    height: 48px;
-    padding: 0 16px;
-    align-items: center;
-    flex-shrink: 0;
-    align-self: stretch;
-    border-radius: 14px;
-    background: var(--bleu); /* #036 */
-  }
-  
-  .btn-flexible:hover {
-    background: var(--rouge);
-    transform: none; /* Pas de mouvement au hover */
-    box-shadow: none; /* Pas d'ombre au hover */
-  }
-  
-  /* État désactivé */
-  .btn-french:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .btn-french:disabled:hover {
-    background: var(--bleu) !important;
-  }
-</style>

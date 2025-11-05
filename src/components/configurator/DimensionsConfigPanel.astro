@@ -1,0 +1,203 @@
+---
+// filepath: src/components/configurator/DimensionsConfigPanel.astro
+import Button from "../ui/Button.astro";
+
+export interface Props {
+  price?: string;
+}
+
+const { price = "249€" } = Astro.props;
+---
+
+<!-- Section droite : Configuration Dimensions (4/5) -->
+<div class="bg-gray-50 flex flex-col h-full">
+  <!-- Contenu scrollable -->
+  <div class="flex-1 overflow-y-auto p-4">
+    <!-- Header de la section -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="font-primary text-lg text-[#003366] mb-1">
+          Votre Modèle Personnalisé
+        </h2>
+        <p class="font-secondary text-gray-600 text-xs">
+          Fabrication Française
+        </p>
+      </div>
+      <div class="text-[#003366] font-secondary font-bold text-base">
+        {price}
+      </div>
+    </div>
+
+    <!-- Barre de séparation -->
+    <div class="h-px bg-gray-200 mb-4"></div>
+
+    <!-- Section Taille des Verres -->
+    <div class="mb-4">
+      <h3 class="font-secondary font-semibold text-[#003366] mb-3">
+        Taille des Verres
+      </h3>
+      <div class="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
+        <!-- Largeur des verres -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-[#003366] rounded-full"></div>
+            <span class="font-secondary text-sm">Largeur verre (mm)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <input
+              type="range"
+              id="lens-width"
+              min="45"
+              max="60"
+              value="52"
+              class="w-24 accent-[#003366]"
+            />
+            <span
+              class="font-secondary text-sm font-medium w-8 text-right"
+              id="lens-width-value">52</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Largeur du Pont -->
+    <div class="mb-4">
+      <h3 class="font-secondary font-semibold text-[#003366] mb-3">
+        Largeur du Pont
+      </h3>
+      <div class="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
+        <!-- Largeur du pont -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-[#830000] rounded-full"></div>
+            <span class="font-secondary text-sm">Pont nasal (mm)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <input
+              type="range"
+              id="bridge-width"
+              min="14"
+              max="22"
+              value="18"
+              class="w-24 accent-[#003366]"
+            />
+            <span
+              class="font-secondary text-sm font-medium w-8 text-right"
+              id="bridge-width-value">18</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- Boutons de navigation (toujours visibles) -->
+  <div class="bg-gray-50 border-t border-gray-200 p-4">
+    <div class="flex justify-between items-center">
+      <button
+        id="prev-step"
+        class="flex items-center gap-2 text-[#003366] font-secondary transition-colors hover:text-[#830000]"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Précédent
+      </button>
+
+      <button
+        id="next-step"
+        class="flex h-12 px-6 items-center rounded-[14px] bg-[#003366] text-white font-secondary font-medium transition-colors duration-300 hover:bg-[#830000]"
+      >
+        Suivant
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Gestion des dimensions
+  document.addEventListener("DOMContentLoaded", () => {
+    const lensWidthSlider = document.querySelector(
+      "#lens-width"
+    ) as HTMLInputElement;
+    const bridgeWidthSlider = document.querySelector(
+      "#bridge-width"
+    ) as HTMLInputElement;
+
+    const lensWidthValue = document.querySelector("#lens-width-value");
+    const bridgeWidthValue = document.querySelector("#bridge-width-value");
+
+    // Fonction pour mettre à jour les valeurs affichées
+    function updateValues() {
+      if (lensWidthValue)
+        lensWidthValue.textContent = lensWidthSlider.value;
+      if (bridgeWidthValue)
+        bridgeWidthValue.textContent = bridgeWidthSlider.value;
+    }
+
+    // Gestion des sliders
+    [lensWidthSlider, bridgeWidthSlider].forEach((slider) => {
+      if (slider) {
+        slider.addEventListener("input", () => {
+          updateValues();
+
+          // Dispatch d'un événement pour les changements de dimensions
+          window.dispatchEvent(
+            new CustomEvent("dimensionChange", {
+              detail: {
+                type: slider.id === 'lens-width' ? 'lens-width' : 'bridge-width',
+                value: parseInt(slider.value),
+                lensWidth: parseInt(lensWidthSlider.value),
+                bridgeWidth: parseInt(bridgeWidthSlider.value)
+              },
+            })
+          );
+        });
+      }
+    });
+
+    // Initialiser les valeurs
+    updateValues();
+
+    // Écouter l'événement de chargement d'une création existante
+    window.addEventListener('loadExistingCreation', (e) => {
+      const customEvent = e as CustomEvent;
+      const lunette = customEvent.detail;
+      console.log('📝 DimensionsConfigPanel: Chargement de la création existante:', lunette);
+
+      // Charger les dimensions
+      if (lunette.taille_verres) {
+        lensWidthSlider.value = lunette.taille_verres.toString();
+      }
+      if (lunette.largeur_pont) {
+        bridgeWidthSlider.value = lunette.largeur_pont.toString();
+      }
+      
+      // Mettre à jour l'affichage
+      updateValues();
+      
+      // Dispatcher les événements de changement pour synchroniser
+      window.dispatchEvent(
+        new CustomEvent("dimensionChange", {
+          detail: {
+            type: 'both',
+            lensWidth: parseInt(lensWidthSlider.value),
+            bridgeWidth: parseInt(bridgeWidthSlider.value)
+          },
+        })
+      );
+    });
+  });
+</script>

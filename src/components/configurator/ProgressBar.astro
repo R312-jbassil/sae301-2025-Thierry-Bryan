@@ -1,0 +1,101 @@
+---
+// filepath: src/components/configurator/ProgressBar.astro
+export interface Props {
+  currentStep?: number;
+}
+
+const { currentStep = 1 } = Astro.props;
+
+const steps = [
+  { id: 1, label: "Forme & Matériau" },
+  { id: 2, label: "Branches" },
+  { id: 3, label: "Verres" },
+  { id: 4, label: "Dimensions" },
+  { id: 5, label: "Actions" }
+];
+---
+
+<!-- Barre de progression -->
+<div class="px-6 pt-6 pb-2">
+  <div class="flex items-center justify-between max-w-4xl mx-auto" id="progress-bar">
+    {steps.map((step, index) => (
+      <>
+        <!-- Étape -->
+        <div class="flex items-center">
+          <div class={`step-indicator flex items-center justify-center w-6 h-6 rounded-full font-secondary font-medium text-xs transition-all duration-300`}
+               data-step={step.id}>
+            {step.id}
+          </div>
+          <span class={`step-label ml-2 font-secondary font-medium text-sm transition-all duration-300`}
+                data-step={step.id}>
+            {step.label}
+          </span>
+        </div>
+        
+        <!-- Ligne de connexion (sauf pour le dernier) -->
+        {index < steps.length - 1 && (
+          <div class="step-connector flex-1 h-0.5 bg-gray-200 mx-3 transition-all duration-300" 
+               data-step={step.id}></div>
+        )}
+      </>
+    ))}
+  </div>
+</div>
+
+<script>
+  // Fonction pour mettre à jour l'apparence de la barre de progression
+  function updateProgressBar(currentStep: number) {
+    const stepIndicators = document.querySelectorAll('.step-indicator');
+    const stepLabels = document.querySelectorAll('.step-label');
+    const stepConnectors = document.querySelectorAll('.step-connector');
+
+    stepIndicators.forEach((indicator) => {
+      const stepId = parseInt(indicator.getAttribute('data-step') || '0');
+      
+      if (stepId <= currentStep) {
+        indicator.classList.remove('bg-gray-200', 'text-gray-400');
+        indicator.classList.add('bg-[#003366]', 'text-white');
+      } else {
+        indicator.classList.remove('bg-[#003366]', 'text-white');
+        indicator.classList.add('bg-gray-200', 'text-gray-400');
+      }
+    });
+
+    stepLabels.forEach((label) => {
+      const stepId = parseInt(label.getAttribute('data-step') || '0');
+      
+      if (stepId <= currentStep) {
+        label.classList.remove('text-gray-400');
+        label.classList.add('text-[#003366]');
+      } else {
+        label.classList.remove('text-[#003366]');
+        label.classList.add('text-gray-400');
+      }
+    });
+
+    // Animer les connecteurs
+    stepConnectors.forEach((connector) => {
+      const stepId = parseInt(connector.getAttribute('data-step') || '0');
+      
+      if (stepId < currentStep) {
+        connector.classList.remove('bg-gray-200');
+        connector.classList.add('bg-[#003366]');
+      } else {
+        connector.classList.remove('bg-[#003366]');
+        connector.classList.add('bg-gray-200');
+      }
+    });
+  }
+
+  // Initialisation
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialiser avec l'étape 1
+    updateProgressBar(1);
+
+    // Écouter les changements d'étapes
+    window.addEventListener('stepChange', (e) => {
+      const event = e as CustomEvent;
+      updateProgressBar(event.detail.currentStep);
+    });
+  });
+</script>

@@ -1,0 +1,152 @@
+---
+// filepath: src/components/configurator/BranchesConfigPanel.astro
+import Button from "../ui/Button.astro";
+
+export interface Props {
+  price?: string;
+}
+
+const { price = "249€" } = Astro.props;
+---
+
+<!-- Section droite : Configuration Branches (2/5) -->
+<div class="bg-gray-50 flex flex-col h-full">
+  <!-- Contenu scrollable -->
+  <div class="flex-1 overflow-y-auto p-4">
+    <!-- Header de la section -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="font-primary text-lg text-[#003366] mb-1">
+          Votre Modèle Personnalisé
+        </h2>
+        <p class="font-secondary text-gray-600 text-xs">
+          Fabrication Française
+        </p>
+      </div>
+      <div class="text-[#003366] font-secondary font-bold text-base">
+        {price}
+      </div>
+    </div>
+
+    <!-- Barre de séparation -->
+    <div class="h-px bg-gray-200 mb-4"></div>
+
+    <!-- Section Couleur Branches -->
+    <div class="mb-4">
+      <h3 class="font-secondary font-semibold text-[#003366] mb-3">
+        Couleur Branches
+      </h3>
+      <div class="flex gap-3 justify-start flex-wrap">
+        <!-- Couleurs disponibles -->
+        <button
+          data-branch-color="#000000"
+          class="branch-color-btn w-12 h-12 bg-black rounded-full border-4 border-[#003366] transition-transform hover:scale-110"
+        ></button>
+        <button
+          data-branch-color="#b45309"
+          class="branch-color-btn w-12 h-12 bg-amber-700 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+        ></button>
+        <button
+          data-branch-color="#003366"
+          class="branch-color-btn w-12 h-12 bg-[#003366] rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+        ></button>
+        <button
+          data-branch-color="#830000"
+          class="branch-color-btn w-12 h-12 bg-[#830000] rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+        ></button>
+        <button
+          data-branch-color="#15803d"
+          class="branch-color-btn w-12 h-12 bg-green-700 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+        ></button>
+        <button
+          data-branch-color="#9333ea"
+          class="branch-color-btn w-12 h-12 bg-purple-600 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Boutons de navigation (toujours visibles) -->
+  <div class="bg-gray-50 border-t border-gray-200 p-4">
+    <div class="flex justify-between items-center">
+      <button
+        id="prev-step"
+        class="flex items-center gap-2 text-[#003366] font-secondary transition-colors hover:text-[#830000]"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Précédent
+      </button>
+
+      <button
+        id="next-step"
+        class="flex h-12 px-6 items-center rounded-[14px] bg-[#003366] text-white font-secondary font-medium transition-colors duration-300 hover:bg-[#830000]"
+      >
+        Suivant
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Gestion du changement de couleur des branches
+  document.addEventListener("DOMContentLoaded", () => {
+    const branchColorButtons = document.querySelectorAll(".branch-color-btn");
+
+    // Initialiser la couleur par défaut (noir)
+    document.documentElement.style.setProperty("--branch-color", "#000000");
+
+    branchColorButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedColor = button.getAttribute("data-branch-color");
+
+        // Mise à jour de l'interface
+        branchColorButtons.forEach((btn) => {
+          btn.classList.remove("border-4", "border-[#003366]");
+          btn.classList.add("border-2", "border-gray-200");
+        });
+
+        button.classList.remove("border-2", "border-gray-200");
+        button.classList.add("border-4", "border-[#003366]");
+
+        // Mise à jour de la couleur des branches du SVG
+        document.documentElement.style.setProperty(
+          "--branch-color",
+          selectedColor
+        );
+
+        // Dispatch d'un événement personnalisé
+        window.dispatchEvent(
+          new CustomEvent("branchColorChange", {
+            detail: { color: selectedColor },
+          })
+        );
+      });
+    });
+
+    // Écouter l'événement de chargement d'une création existante
+    window.addEventListener('loadExistingCreation', (e) => {
+      const customEvent = e as CustomEvent;
+      const lunette = customEvent.detail;
+      console.log('📝 BranchesConfigPanel: Chargement de la création existante:', lunette);
+
+      // Charger la couleur des branches
+      if (lunette.couleur_branches) {
+        const colorButton = document.querySelector(`[data-branch-color="${lunette.couleur_branches}"]`) as HTMLElement;
+        if (colorButton) {
+          colorButton.click(); // Simuler un clic pour activer la couleur
+        }
+      }
+    });
+  });
+</script>

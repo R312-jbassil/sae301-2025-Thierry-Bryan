@@ -1,0 +1,247 @@
+---
+// filepath: src/components/configurator/VerresConfigPanel.astro
+import Button from "../ui/Button.astro";
+
+export interface Props {
+  price?: string;
+}
+
+const { price = "249€" } = Astro.props;
+---
+
+<!-- Section droite : Configuration Verres (3/5) -->
+<div class="bg-gray-50 flex flex-col h-full">
+  <!-- Contenu scrollable -->
+  <div class="flex-1 overflow-y-auto p-4">
+    <!-- Header de la section -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="font-primary text-lg text-[#003366] mb-1">
+          Votre Modèle Personnalisé
+        </h2>
+        <p class="font-secondary text-gray-600 text-xs">
+          Fabrication Française
+        </p>
+      </div>
+      <div class="text-[#003366] font-secondary font-bold text-base">
+        {price}
+      </div>
+    </div>
+
+    <!-- Barre de séparation -->
+    <div class="h-px bg-gray-200 mb-4"></div>
+
+    <!-- Section Teinte des Verres -->
+    <div class="mb-4">
+      <h3 class="font-secondary font-semibold text-[#003366] mb-3">
+        Teinte des Verres
+      </h3>
+      <div class="grid grid-cols-4 gap-3 mb-4">
+        <!-- Verres transparents (sélectionnés) -->
+        <button
+          data-lens-color="transparent"
+          data-lens-fill="#ffffff"
+          data-lens-opacity="1"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-4 border-[#003366] transition-transform hover:scale-110 flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-white border-2 border-gray-300 rounded-full">
+          </div>
+        </button>
+
+        <!-- Verres gris -->
+        <button
+          data-lens-color="gray"
+          data-lens-fill="#6b7280"
+          data-lens-opacity="0.7"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
+        </button>
+
+        <!-- Verres gris foncé -->
+        <button
+          data-lens-color="dark-gray"
+          data-lens-fill="#374151"
+          data-lens-opacity="0.8"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-gray-700 rounded-full"></div>
+        </button>
+
+        <!-- Verres bruns -->
+        <button
+          data-lens-color="brown"
+          data-lens-fill="#92400e"
+          data-lens-opacity="0.7"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-amber-700 rounded-full"></div>
+        </button>
+
+        <!-- Verres verts -->
+        <button
+          data-lens-color="green"
+          data-lens-fill="#166534"
+          data-lens-opacity="0.7"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-green-700 rounded-full"></div>
+        </button>
+
+        <!-- Verres bleus -->
+        <button
+          data-lens-color="blue"
+          data-lens-fill="#1e40af"
+          data-lens-opacity="0.7"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-blue-700 rounded-full"></div>
+        </button>
+
+        <!-- Verres jaunes -->
+        <button
+          data-lens-color="yellow"
+          data-lens-fill="#eab308"
+          data-lens-opacity="0.6"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-yellow-500 rounded-full"></div>
+        </button>
+
+        <!-- Verres roses -->
+        <button
+          data-lens-color="pink"
+          data-lens-fill="#ec4899"
+          data-lens-opacity="0.6"
+          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+        >
+          <div class="w-10 h-10 bg-pink-500 rounded-full"></div>
+        </button>
+      </div>
+
+      <!-- Label transparence -->
+      <div class="text-center">
+        <span
+          class="font-secondary text-sm text-gray-600"
+          id="transparency-label">Transparent</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Boutons de navigation (toujours visibles) -->
+  <div class="bg-gray-50 border-t border-gray-200 p-4">
+    <div class="flex justify-between items-center">
+      <button
+        id="prev-step"
+        class="flex items-center gap-2 text-[#003366] font-secondary transition-colors hover:text-[#830000]"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Précédent
+      </button>
+
+      <button
+        id="next-step"
+        class="flex h-12 px-6 items-center rounded-[14px] bg-[#003366] text-white font-secondary font-medium transition-colors duration-300 hover:bg-[#830000]"
+      >
+        Suivant
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Gestion du changement de teinte des verres
+  document.addEventListener("DOMContentLoaded", () => {
+    const lensColorButtons = document.querySelectorAll(".lens-color-btn");
+    const transparencyLabel = document.querySelector("#transparency-label");
+
+    // Initialiser les verres transparents par défaut
+    document.documentElement.style.setProperty("--lens-color", "#ffffff");
+    document.documentElement.style.setProperty("--lens-opacity", "1");
+
+    lensColorButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedColor = button.getAttribute("data-lens-color");
+        const lensFill = button.getAttribute("data-lens-fill");
+        const lensOpacity = button.getAttribute("data-lens-opacity");
+
+        // Mise à jour de l'interface
+        lensColorButtons.forEach((btn) => {
+          btn.classList.remove("border-4", "border-[#003366]");
+          btn.classList.add("border-2", "border-gray-200");
+        });
+
+        button.classList.remove("border-2", "border-gray-200");
+        button.classList.add("border-4", "border-[#003366]");
+
+        // Mise à jour des variables CSS pour les verres
+        document.documentElement.style.setProperty("--lens-color", lensFill);
+        document.documentElement.style.setProperty(
+          "--lens-opacity",
+          lensOpacity
+        );
+
+        // Mise à jour du label
+        const labelMap = {
+          transparent: "Transparent",
+          gray: "Gris léger",
+          "dark-gray": "Gris foncé",
+          brown: "Brun",
+          green: "Vert",
+          blue: "Bleu",
+          yellow: "Jaune",
+          pink: "Rose",
+        };
+
+        if (transparencyLabel && selectedColor) {
+          transparencyLabel.textContent =
+            labelMap[selectedColor as keyof typeof labelMap] || "Transparent";
+        }
+
+        // Dispatch d'un événement personnalisé
+        window.dispatchEvent(
+          new CustomEvent("lensColorChange", {
+            detail: {
+              color: selectedColor,
+              fill: lensFill,
+              opacity: lensOpacity,
+            },
+          })
+        );
+      });
+    });
+
+    // Écouter l'événement de chargement d'une création existante
+    window.addEventListener('loadExistingCreation', (e) => {
+      const customEvent = e as CustomEvent;
+      const lunette = customEvent.detail;
+      console.log('📝 VerresConfigPanel: Chargement de la création existante:', lunette);
+
+      // Charger la couleur des verres
+      if (lunette.couleur_verres) {
+        // Essayer de trouver le bouton correspondant par la couleur hex
+        const colorButton = document.querySelector(`[data-lens-fill="${lunette.couleur_verres}"]`) as HTMLElement;
+        if (colorButton) {
+          colorButton.click(); // Simuler un clic pour activer la couleur
+        } else if (lunette.couleur_verres === 'transparent') {
+          // Activer la transparence
+          const transparentButton = document.querySelector(`[data-lens-color="transparent"]`) as HTMLElement;
+          if (transparentButton) {
+            transparentButton.click();
+          }
+        }
+      }
+    });
+  });
+</script>

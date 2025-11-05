@@ -1,0 +1,411 @@
+---
+// filepath: src/pages/auth/index.astro
+import Layout from "../../layouts/Layout.astro";
+
+// Récupérer l'URL de redirection depuis les paramètres
+const url = Astro.url;
+const redirectParam = url.searchParams.get('redirect') || '/configurator';
+---
+
+<Layout title="TaVue - Authentification">
+  <main class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      
+      <!-- Header -->
+      <div class="text-center">
+        <h1 class="font-primary text-4xl text-[#003366] mb-2">TaVue</h1>
+        <p class="font-secondary text-gray-600 text-sm">Vos lunettes sur mesure, fabriquées en France</p>
+      </div>
+
+      <!-- Card principale -->
+      <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+        
+        <!-- Bouton Google (optionnel) -->
+        <button id="google-signin" class="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-secondary text-gray-700 hover:bg-gray-50 transition-colors mb-6">
+          <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continuer avec Google
+        </button>
+
+        <div class="text-center text-gray-400 text-sm mb-6">ou</div>
+
+        <!-- Onglets -->
+        <div class="flex mb-6">
+          <button id="tab-signin" class="tab-btn flex-1 text-center py-2 font-secondary font-medium text-[#003366] border-b-2 border-[#003366] transition-colors">
+            Connexion
+          </button>
+          <button id="tab-signup" class="tab-btn flex-1 text-center py-2 font-secondary font-medium text-gray-400 border-b-2 border-transparent transition-colors hover:text-[#003366]">
+            Inscription
+          </button>
+        </div>
+
+        <!-- Formulaire de Connexion -->
+        <div id="signin-form" class="auth-form">
+          <form class="space-y-4">
+            <div>
+              <input
+                id="signin-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="Email"
+                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] font-secondary"
+              />
+            </div>
+            <div>
+              <input
+                id="signin-password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                placeholder="Mot de passe"
+                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] font-secondary"
+              />
+            </div>
+            
+            <div class="flex items-center justify-end">
+              <a href="#" class="font-secondary text-sm text-[#003366] hover:text-[#830000] transition-colors">
+                Mot de passe oublié ?
+              </a>
+            </div>
+
+            <button
+              type="submit"
+              id="signin-btn"
+              class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-[#003366] hover:bg-[#830000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors duration-300 font-secondary"
+            >
+              Se connecter
+            </button>
+          </form>
+        </div>
+
+        <!-- Formulaire d'Inscription -->
+        <div id="signup-form" class="auth-form hidden">
+          <form class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <input
+                id="signup-prenom"
+                name="prenom"
+                type="text"
+                autocomplete="given-name"
+                required
+                placeholder="Prénom"
+                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] font-secondary"
+              />
+              <input
+                id="signup-nom"
+                name="nom"
+                type="text"
+                autocomplete="family-name"
+                required
+                placeholder="Nom"
+                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] font-secondary"
+              />
+            </div>
+            <div>
+              <input
+                id="signup-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="Email"
+                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] font-secondary"
+              />
+            </div>
+            <div>
+              <input
+                id="signup-password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                required
+                placeholder="Mot de passe"
+                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] font-secondary"
+              />
+            </div>
+            <div>
+              <input
+                id="signup-password-confirm"
+                name="passwordConfirm"
+                type="password"
+                autocomplete="new-password"
+                required
+                placeholder="Confirmer le mot de passe"
+                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-xl placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366] font-secondary"
+              />
+            </div>
+
+            <button
+              type="submit"
+              id="signup-btn"
+              class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-[#003366] hover:bg-[#830000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] transition-colors duration-300 font-secondary"
+            >
+              S'inscrire
+            </button>
+          </form>
+        </div>
+
+        <!-- Message d'erreur/succès -->
+        <div id="message" class="hidden mt-4 p-3 rounded-lg text-sm font-secondary"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center">
+        <div class="flex justify-center space-x-8 text-gray-400 text-sm font-secondary">
+          <div class="flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            Sauvegardez vos créations
+          </div>
+          <div class="flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+            </svg>
+            Suivi de commande
+          </div>
+          <div class="flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+            Assistant IA
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  // Gestion des onglets et de l'authentification
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabSignin = document.querySelector('#tab-signin');
+    const tabSignup = document.querySelector('#tab-signup');
+    const signinForm = document.querySelector('#signin-form');
+    const signupForm = document.querySelector('#signup-form');
+    const messageDiv = document.querySelector('#message');
+
+    // Récupérer l'URL de redirection
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get('redirect') || '/configurator';
+
+    // Gestion des onglets
+    function switchTab(activeTab: string) {
+      const tabs = [tabSignin, tabSignup];
+      const forms = [signinForm, signupForm];
+
+      tabs.forEach(tab => {
+        tab?.classList.remove('text-[#003366]', 'border-[#003366]');
+        tab?.classList.add('text-gray-400', 'border-transparent');
+      });
+
+      forms.forEach(form => {
+        form?.classList.add('hidden');
+      });
+
+      if (activeTab === 'signin') {
+        tabSignin?.classList.remove('text-gray-400', 'border-transparent');
+        tabSignin?.classList.add('text-[#003366]', 'border-[#003366]');
+        signinForm?.classList.remove('hidden');
+      } else {
+        tabSignup?.classList.remove('text-gray-400', 'border-transparent');
+        tabSignup?.classList.add('text-[#003366]', 'border-[#003366]');
+        signupForm?.classList.remove('hidden');
+      }
+
+      // Cacher les messages
+      hideMessage();
+    }
+
+    // Event listeners pour les onglets
+    tabSignin?.addEventListener('click', () => switchTab('signin'));
+    tabSignup?.addEventListener('click', () => switchTab('signup'));
+
+    // Fonction pour afficher les messages
+    function showMessage(text: string, type: 'success' | 'error') {
+      if (messageDiv) {
+        messageDiv.textContent = text;
+        messageDiv.className = `mt-4 p-3 rounded-lg text-sm font-secondary ${
+          type === 'success' 
+            ? 'bg-green-50 text-green-800 border border-green-200' 
+            : 'bg-red-50 text-red-800 border border-red-200'
+        }`;
+        messageDiv.classList.remove('hidden');
+      }
+    }
+
+    function hideMessage() {
+      messageDiv?.classList.add('hidden');
+    }
+
+    // Gestion de la connexion
+    const signinFormElement = signinForm?.querySelector('form');
+    signinFormElement?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = (document.querySelector('#signin-email') as HTMLInputElement)?.value;
+      const password = (document.querySelector('#signin-password') as HTMLInputElement)?.value;
+      const submitBtn = document.querySelector('#signin-btn') as HTMLButtonElement;
+
+      if (!email || !password) {
+        showMessage('Veuillez remplir tous les champs', 'error');
+        return;
+      }
+
+      try {
+        submitBtn.textContent = 'Connexion...';
+        submitBtn.disabled = true;
+
+        // Import PocketBase
+        const pbModule = await import('../../utils/pb');
+        const pb = pbModule.default;
+
+        // Authentification
+        const authData = await pb.collection('users').authWithPassword(email, password);
+        
+        console.log('Connexion réussie:', authData);
+        showMessage('Connexion réussie ! Redirection...', 'success');
+
+        // Redirection après un court délai
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 1500);
+
+      } catch (error: any) {
+        console.error('Erreur de connexion:', error);
+        showMessage('Erreur de connexion: ' + (error?.message || 'Email ou mot de passe incorrect'), 'error');
+      } finally {
+        submitBtn.textContent = 'Se connecter';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Gestion de l'inscription
+    const signupFormElement = signupForm?.querySelector('form');
+    signupFormElement?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const prenom = (document.querySelector('#signup-prenom') as HTMLInputElement)?.value;
+      const nom = (document.querySelector('#signup-nom') as HTMLInputElement)?.value;
+      const email = (document.querySelector('#signup-email') as HTMLInputElement)?.value;
+      const password = (document.querySelector('#signup-password') as HTMLInputElement)?.value;
+      const passwordConfirm = (document.querySelector('#signup-password-confirm') as HTMLInputElement)?.value;
+      const submitBtn = document.querySelector('#signup-btn') as HTMLButtonElement;
+
+      // Validations
+      if (!prenom || !nom || !email || !password || !passwordConfirm) {
+        showMessage('Veuillez remplir tous les champs', 'error');
+        return;
+      }
+
+      if (password !== passwordConfirm) {
+        showMessage('Les mots de passe ne correspondent pas', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage('Le mot de passe doit contenir au moins 6 caractères', 'error');
+        return;
+      }
+
+      try {
+        submitBtn.textContent = 'Inscription...';
+        submitBtn.disabled = true;
+
+        // Import PocketBase
+        const pbModule = await import('../../utils/pb');
+        const pb = pbModule.default;
+
+        // Création du compte
+        const userData = {
+          prenom: prenom,
+          nom: nom,
+          email: email,
+          password: password,
+          passwordConfirm: passwordConfirm
+        };
+
+        const record = await pb.collection('users').create(userData);
+        console.log('Compte créé:', record);
+
+        // Connexion automatique après inscription
+        const authData = await pb.collection('users').authWithPassword(email, password);
+        console.log('Connexion automatique réussie:', authData);
+
+        showMessage('Compte créé avec succès ! Redirection...', 'success');
+
+        // Redirection après un court délai
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 1500);
+
+      } catch (error: any) {
+        console.error('Erreur d\'inscription:', error);
+        
+        let errorMessage = 'Erreur lors de l\'inscription';
+        
+        // Gestion des erreurs spécifiques PocketBase
+        if (error?.data?.email) {
+          errorMessage = 'Cette adresse email est déjà utilisée';
+        } else if (error?.message) {
+          errorMessage = error.message;
+        }
+        
+        showMessage(errorMessage, 'error');
+      } finally {
+        submitBtn.textContent = 'S\'inscrire';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Vérifier si l'utilisateur est déjà connecté
+    async function checkAuthStatus() {
+      try {
+        const pbModule = await import('../../utils/pb');
+        const pb = pbModule.default;
+        
+        if (pb.authStore.isValid) {
+          // L'utilisateur est déjà connecté, rediriger
+          window.location.href = redirectUrl;
+        }
+      } catch (error) {
+        console.log('PocketBase non disponible ou erreur de vérification');
+      }
+    }
+
+    // Vérifier l'état de connexion au chargement
+    checkAuthStatus();
+
+    // Initialiser avec l'onglet connexion
+    switchTab('signin');
+  });
+</script>
+
+<style>
+  .auth-form {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .tab-btn {
+    position: relative;
+  }
+  
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+  }
+</style>
+</Layout>

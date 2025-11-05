@@ -108,21 +108,21 @@
   /* Titres avec Parisienne */
   h1, .h1 {
     font-family: var(--font-primary);
-    font-size: 3.5rem;
+    font-size: 1.75rem;
     color: var(--bleu);
     font-weight: 400;
   }
   
   h2, .h2 {
     font-family: var(--font-primary);
-    font-size: 2.5rem;
+    font-size: 1.25rem;
     color: var(--bleu);
     font-weight: 400;
   }
   
   h3, .h3 {
     font-family: var(--font-secondary);
-    font-size: 1.875rem;
+    font-size: 0.875rem;
     color: var(--bleu);
     font-weight: 600;
   }
@@ -130,7 +130,7 @@
   /* Paragraphes avec Montserrat */
   p, .text-body {
     font-family: var(--font-secondary);
-    font-size: 1rem;
+    font-size: 0.75rem;
     line-height: 1.6;
     color: var(--noir);
   }

@@ -1,0 +1,364 @@
+---
+// filepath: src/pages/configurator/index.astro
+import Layout from "../../layouts/Layout.astro";
+import ProgressBar from "../../components/configurator/ProgressBar.astro";
+import GlassesViewer from "../../components/configurator/GlassesViewer.astro";
+import ConfigPanel from "../../components/configurator/ConfigPanel.astro";
+import BranchesConfigPanel from "../../components/configurator/BranchesConfigPanel.astro";
+import VerresConfigPanel from "../../components/configurator/VerresConfigPanel.astro";
+import DimensionsConfigPanel from "../../components/configurator/DimensionsConfigPanel.astro";
+import ActionsConfigPanel from "../../components/configurator/ActionsConfigPanel.astro";
+---
+
+<Layout title="Configurateur TaVue - Composer ma paire">
+  <main class="h-[calc(100vh-60px)] bg-white flex">
+    <div class="w-2/3 flex flex-col">
+      
+      <!-- Barre de progression -->
+      <ProgressBar currentStep={1} />
+
+      <!-- Section : Aperçu du modèle 3D -->
+      <GlassesViewer frameColor="#000000" />
+    </div>
+
+    <!-- Panneaux de configuration -->
+    <div id="config-container" class="w-1/3 h-full">
+      <!-- Étape 1 : Forme & Matériau -->
+      <div id="step-1" class="config-step active w-full h-full">
+        <ConfigPanel price="249€" />
+      </div>
+      
+      <!-- Étape 2 : Branches -->
+      <div id="step-2" class="config-step hidden w-full h-full">
+        <BranchesConfigPanel price="249€" />
+      </div>
+      
+      <!-- Étape 3 : Verres -->
+      <div id="step-3" class="config-step hidden w-full h-full">
+        <VerresConfigPanel price="249€" />
+      </div>
+      
+      <!-- Étape 4 : Dimensions -->
+      <div id="step-4" class="config-step hidden w-full h-full">
+        <DimensionsConfigPanel price="249€" />
+      </div>
+      
+      <!-- Étape 5 : Actions -->
+      <div id="step-5" class="config-step hidden w-full h-full">
+        <ActionsConfigPanel price="249€" />
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .config-step {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .config-step.hidden {
+    display: none;
+  }
+  
+  .config-step.active {
+    display: block;
+  }
+</style>
+
+<script>
+  // Gérer l'affichage des panneaux selon l'étape
+  function showPanel(stepNumber: number) {
+    const panels = document.querySelectorAll('.config-step');
+    
+    panels.forEach(panel => {
+      const panelId = panel.id;
+      const panelStep = parseInt(panelId.replace('step-', ''));
+      
+      if (panelStep === stepNumber) {
+        panel.classList.remove('hidden');
+        panel.classList.add('active');
+      } else {
+        panel.classList.remove('active');
+        panel.classList.add('hidden');
+      }
+    });
+  }
+
+  // Système de gestion global des étapes
+  class StepManager {
+    private currentStep = 1;
+    private maxSteps = 5;
+
+    getCurrentStep() {
+      return this.currentStep;
+    }
+
+    setStep(step: number) {
+      if (step >= 1 && step <= this.maxSteps) {
+        this.currentStep = step;
+        this.updateUI();
+        this.notifyChange();
+      }
+    }
+
+    nextStep() {
+      if (this.currentStep < this.maxSteps) {
+        this.setStep(this.currentStep + 1);
+      }
+    }
+
+    prevStep() {
+      if (this.currentStep > 1) {
+        this.setStep(this.currentStep - 1);
+      }
+    }
+
+    private updateUI() {
+      showPanel(this.currentStep);
+    }
+
+    private notifyChange() {
+      window.dispatchEvent(new CustomEvent('stepChange', { 
+        detail: { currentStep: this.currentStep } 
+      }));
+    }
+  }
+
+  // Instance globale
+  const stepManager = new StepManager();
+
+  // Fonction pour afficher les notifications
+  function showNotification(message: string, type: 'success' | 'error' | 'info' = 'success') {
+    console.log(`[${type.toUpperCase()}] ${message}`);
+    
+    // Créer une notification visuelle simple
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 font-secondary transition-all duration-300 ${
+      type === 'success' ? 'bg-green-500 text-white' :
+      type === 'error' ? 'bg-red-500 text-white' :
+      'bg-blue-500 text-white'
+    }`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Supprimer après 4 secondes
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
+    }, 4000);
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Vérifier s'il y a un paramètre d'édition dans l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get('edit');
+
+    if (editId) {
+      // Charger les données de la création à modifier
+      try {
+        const pbModule = await import('../../utils/pb');
+        const pb = pbModule.default;
+        
+        const lunette = await pb.collection('Lunette').getOne(editId);
+        console.log('📝 Chargement de la création pour modification:', lunette);
+        
+        // Dispatcher un événement avec les données de la création
+        window.dispatchEvent(new CustomEvent('loadExistingCreation', {
+          detail: lunette
+        }));
+        
+        showNotification(`🔧 Modification de "${lunette.nom_modele}"`, 'info');
+      } catch (error) {
+        console.error('❌ Erreur lors du chargement de la création:', error);
+        showNotification('❌ Impossible de charger la création à modifier', 'error');
+      }
+    }
+
+    // Initialiser avec l'étape 1
+    showPanel(1);
+
+    // Gestion des boutons de navigation
+    document.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+      
+      if (target && (target.id === 'next-step' || target.closest('#next-step'))) {
+        e.preventDefault();
+        stepManager.nextStep();
+      }
+      
+      if (target && (target.id === 'prev-step' || target.closest('#prev-step'))) {
+        e.preventDefault();
+        stepManager.prevStep();
+      }
+    });
+
+    // Exposer le stepManager globalement pour les autres scripts
+    (window as any).stepManager = stepManager;
+
+    // Gestion de l'enregistrement des lunettes
+    window.addEventListener('saveLunette', async (e: Event) => {
+      try {
+        const customEvent = e as CustomEvent;
+        console.log('Événement saveLunette reçu:', customEvent.detail);
+
+        // Import dynamique des utilitaires PocketBase et Auth
+        const [pbModule, authModule] = await Promise.all([
+          import('../../utils/pb'),
+          import('../../utils/auth')
+        ]);
+        
+        const pb = pbModule.default;
+        const { AuthService } = authModule;
+
+        // Vérifier que l'utilisateur est connecté
+        if (!AuthService.isAuthenticated()) {
+          showNotification('❌ Vous devez être connecté pour enregistrer une paire de lunettes', 'error');
+          // Redirection vers la page de connexion avec l'URL actuelle
+          setTimeout(() => {
+            window.location.href = '/auth?redirect=' + encodeURIComponent(window.location.pathname);
+          }, 2000);
+          return;
+        }
+
+        const lunetteConfig = customEvent.detail;
+
+        // D'abord, récupérer les matériaux disponibles pour validation
+        let materiaux = await pb.collection('Materiau').getFullList();
+        console.log('🔍 Matériaux disponibles:', materiaux);
+
+        // Si aucun matériau n'existe, créer des matériaux par défaut
+        if (materiaux.length === 0) {
+          console.log('📝 Aucun matériau trouvé, création de matériaux par défaut...');
+          const materiauxDefaut = [
+            { libelle: "Acétate Artisanal" },
+            { libelle: "Titane Premium" }, 
+            { libelle: "Acier Inoxydable" },
+            { libelle: "Corne Naturelle" },
+            { libelle: "Plastique Recyclé" }
+          ];
+
+          for (const materiau of materiauxDefaut) {
+            try {
+              const created = await pb.collection('Materiau').create(materiau);
+              console.log('✅ Matériau créé:', created);
+              materiaux.push(created);
+            } catch (createError) {
+              console.error('❌ Erreur création matériau:', createError);
+            }
+          }
+        }
+
+        // Vérifier que le matériau existe et obtenir un ID valide
+        let validMaterialId = null;
+        
+        if (materiaux.length > 0) {
+          // Chercher le matériau par ID
+          const foundMaterial = materiaux.find((mat: any) => mat.id === lunetteConfig.id_materiau);
+          
+          if (foundMaterial) {
+            validMaterialId = foundMaterial.id;
+            console.log('✅ Matériau trouvé:', foundMaterial);
+          } else {
+            // Si l'ID n'existe pas, utiliser le premier matériau disponible
+            validMaterialId = materiaux[0].id;
+            console.log('⚠️ Matériau non trouvé, utilisation du premier disponible:', materiaux[0]);
+          }
+        } else {
+          throw new Error('Aucun matériau disponible dans la base de données. Vérifiez que PocketBase est lancé et que la collection Materiau existe.');
+        }
+
+        // Préparer les données pour PocketBase avec validation stricte
+        const lunetteData = {
+          nom_modele: String(lunetteConfig.nom_modele || 'Ma création'),
+          date_enregistrement: new Date().toISOString(),
+          code_svg: String(lunetteConfig.code_svg || ''),
+          largeur_pont: Number(lunetteConfig.largeur_pont) || 18,
+          taille_verres: Number(lunetteConfig.taille_verres) || 52,
+          couleur_verres: String(lunetteConfig.couleur_verres || 'transparent'),
+          couleur_monture: String(lunetteConfig.couleur_monture || '#000000'),
+          couleur_branches: String(lunetteConfig.couleur_branches || '#000000'),
+          id_utilisateur: String(pb.authStore.record?.id || ''),
+          id_materiau: String(validMaterialId || '')
+        };
+
+        console.log('🔍 Données à enregistrer (typées):', lunetteData);
+        console.log('🔍 Types des données:');
+        console.log('  - nom_modele:', typeof lunetteData.nom_modele, lunetteData.nom_modele);
+        console.log('  - largeur_pont:', typeof lunetteData.largeur_pont, lunetteData.largeur_pont);
+        console.log('  - taille_verres:', typeof lunetteData.taille_verres, lunetteData.taille_verres);
+        console.log('  - id_utilisateur:', typeof lunetteData.id_utilisateur, lunetteData.id_utilisateur);
+        console.log('  - id_materiau:', typeof lunetteData.id_materiau, lunetteData.id_materiau);
+
+        // Enregistrer dans PocketBase
+        let record;
+        try {
+          record = await pb.collection('Lunette').create(lunetteData);
+          console.log('✅ Lunette enregistrée avec succès:', record);
+        } catch (createError: any) {
+          console.error('❌ Erreur détaillée lors de la création:', createError);
+          
+          // Si c'est une erreur de validation, afficher les détails
+          if (createError?.data) {
+            console.error('📋 Données d\'erreur:', createError.data);
+          }
+          
+          throw createError;
+        }
+        
+        // Notification de succès
+        const successEvent = new CustomEvent('lunetteCreated', {
+          detail: { success: true, record }
+        });
+        window.dispatchEvent(successEvent);
+
+        // Afficher notification de succès
+        showNotification('✅ Paire enregistrée avec succès !', 'success');
+        
+        // Redirection après un délai
+        setTimeout(() => {
+          window.location.href = '/panier';
+        }, 2000);
+
+      } catch (error) {
+        console.error('Erreur lors de l\'enregistrement de la lunette:', error);
+        
+        // Notification d'erreur
+        const errorEvent = new CustomEvent('lunetteCreated', {
+          detail: { success: false, error }
+        });
+        window.dispatchEvent(errorEvent);
+
+        showNotification('❌ Erreur lors de l\'enregistrement: ' + (error as any)?.message, 'error');
+      }
+    });
+
+    // Fonction pour afficher les notifications (réutilisée)
+    function showNotification(message: string, type: 'success' | 'info' | 'error') {
+      const notification = document.createElement('div');
+      notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-secondary text-sm z-50 transition-opacity duration-300 ${
+        type === 'success' ? 'bg-green-600' : 
+        type === 'info' ? 'bg-blue-600' : 'bg-red-600'
+      }`;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+          if (document.body.contains(notification)) {
+            document.body.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Exposer la fonction de notification globalement
+    (window as any).showNotification = showNotification;
+  });
+</script>
