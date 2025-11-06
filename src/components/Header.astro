@@ -3,7 +3,7 @@
 import Button from "./ui/Button.astro";
 ---
 
-<header class="w-full bg-white relative">
+<header class="w-full bg-white relative shadow-sm">
   <!-- Bordure inférieure tricolore -->
   <div
     class="absolute bottom-0 left-0 right-0 h-1"
@@ -12,36 +12,40 @@ import Button from "./ui/Button.astro";
   </div>
 
   <!-- Contenu du header -->
-  <div class="container mx-auto px-6 py-3">
-    <div class="flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center">
-        <img src="/logo_tavue.svg" alt="TaVue" class="h-6 w-auto mr-2" />
+  <div class="container mx-auto px-5 py-3">
+    <div class="flex items-center">
+      <!-- Logo (à gauche) -->
+      <div class="flex items-center mr-8">
+        <a
+          href="/"
+          class="flex items-center hover:opacity-80 transition-opacity"
+        >
+          <img src="/logo_tavue.svg" alt="TaVue" class="h-8 w-auto" />
+        </a>
       </div>
 
-      <!-- Navigation centrale -->
-      <nav class="hidden md:flex">
-        <button
-          class="px-4 py-2 bg-transparent text-bleu hover:text-rouge transition-all duration-300 font-secondary text-sm"
-        >
-          Composer ma paire
-        </button>
-      </nav>
+      <!-- Navigation centrale (milieu exact) -->
+      <div class="flex-1 flex justify-center">
+        <nav class="hidden md:flex">
+          <a
+            href="/configurator"
+            class="px-6 py-2 bg-[#003366] text-white rounded-full hover:bg-[#830000] transition-all duration-300 font-secondary text-sm font-medium shadow-md hover:shadow-lg"
+          >
+            Composer ma paire
+          </a>
+        </nav>
+      </div>
 
-      <!-- Actions utilisateur -->
+      <!-- Actions utilisateur (à droite) -->
       <div class="flex items-center gap-3">
-        <!-- État utilisateur (dynamique) -->
-        <div id="user-actions">
-          <!-- Contenu injecté par JavaScript -->
-        </div>
-
         <!-- Panier -->
         <a
           href="/panier"
-          class="flex items-center gap-1 text-bleu hover:text-rouge transition-all duration-300 hover:-translate-y-0.5"
+          class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all duration-300 hover:shadow-md group"
+          title="Mon panier"
         >
           <svg
-            class="w-4 h-4"
+            class="w-5 h-5 text-gray-600 group-hover:text-[#003366] transition-colors"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -53,16 +57,20 @@ import Button from "./ui/Button.astro";
               d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
             ></path>
           </svg>
-          <span class="font-secondary text-sm">Panier</span>
         </a>
+
+        <!-- État utilisateur (dynamique) -->
+        <div id="user-actions">
+          <!-- Contenu injecté par JavaScript -->
+        </div>
       </div>
 
       <!-- Menu mobile -->
       <button
-        class="md:hidden text-bleu hover:text-rouge transition-colors duration-300"
+        class="md:hidden ml-3 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all duration-300"
       >
         <svg
-          class="w-5 h-5"
+          class="w-5 h-5 text-gray-600"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -89,34 +97,122 @@ import Button from "./ui/Button.astro";
       // Import des utilitaires d'authentification
       const authModule = await import("../utils/auth");
       const { AuthService } = authModule;
+      
+      // Import PocketBase pour les URLs d'avatar
+      const pbModule = await import("../utils/pb");
+      const pb = pbModule.default;
+
+      // Fonction pour créer les initiales
+      function getInitials(name: string, lastname: string): string {
+        const p = name?.charAt(0)?.toUpperCase() || "";
+        const n = lastname?.charAt(0)?.toUpperCase() || "";
+        return p + n || "U";
+      }
 
       // Fonction pour mettre à jour l'interface utilisateur
       function updateUserInterface() {
+        const userActionsContainer = document.querySelector("#user-actions");
+        if (!userActionsContainer) return;
+
         if (AuthService.isAuthenticated()) {
           const user = AuthService.getCurrentUser();
-          const userName = user?.prenom || "Utilisateur";
+          const userName = user?.name || "Utilisateur";
+          
+          // Récupération de l'avatar - PocketBase peut stocker l'avatar de plusieurs façons
+          let userAvatar = null;
+          
+          // Debug: afficher les données utilisateur
+          console.log("Données utilisateur complètes:", user);
+          
+          // Vérifier plusieurs champs possibles pour l'avatar
+          if (user?.avatar) {
+            console.log("Avatar trouvé dans avatar:", user.avatar);
+            if (user.avatar.startsWith('http')) {
+              userAvatar = user.avatar; // URL complète (Google)
+            } else {
+              // Fichier dans PocketBase
+              userAvatar = `${pb.baseUrl}/api/files/_pb_users_auth_/${user.id}/${user.avatar}`;
+            }
+          } else if (user?.avatarUrl) {
+            console.log("Avatar trouvé dans avatarUrl:", user.avatarUrl);
+            userAvatar = user.avatarUrl;
+          } else if (user?.picture) {
+            console.log("Avatar trouvé dans picture:", user.picture);
+            userAvatar = user.picture;
+          } else if (user) {
+            console.log("Aucun avatar trouvé dans les champs standards");
+            // Vérifier tous les champs pour trouver une URL d'image Google
+            Object.keys(user as Record<string, any>).forEach(key => {
+              const value = (user as any)[key];
+              if (typeof value === 'string' && value.includes('googleusercontent.com')) {
+                console.log(`Avatar Google trouvé dans ${key}:`, value);
+                userAvatar = value;
+              }
+            });
+          }
+          
+          const initials = getInitials(user?.name || "", user?.lastname || "");
 
-          // Interface utilisateur connecté
+          // Interface utilisateur connecté - Style minimaliste
           userActionsContainer.innerHTML = `
-            <div class="relative group">
-              <button class="flex items-center gap-1 text-bleu hover:text-rouge transition-all duration-300 hover:-translate-y-0.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                <span class="font-secondary text-sm">${userName}</span>
-                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+            <div class="relative">
+              <button id="user-menu-btn" class="w-10 h-10 rounded-full overflow-hidden border border-gray-300 hover:border-[#003366] transition-all duration-200 bg-white flex items-center justify-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-offset-1">
+                ${
+                  userAvatar
+                    ? `<img src="${userAvatar}" alt="${userName}" class="w-full h-full object-cover" />`
+                    : `<span class="font-secondary text-[#003366] font-semibold">${initials}</span>`
+                }
               </button>
               
-              <!-- Menu déroulant -->
-              <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <!-- Menu large et aéré -->
+              <div id="user-menu" class="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible scale-95 transition-all duration-150 z-50 overflow-hidden">
+                
+                <!-- En-tête utilisateur centré et spacieux -->
+                <div class="px-6 py-6 border-b border-gray-100 text-center">
+                  <!-- Photo de profil grande -->
+                  <div class="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden bg-[#003366] flex items-center justify-center text-white text-lg font-medium">
+                    ${
+                      userAvatar
+                        ? `<img src="${userAvatar}" alt="${userName}" class="w-full h-full object-cover" />`
+                        : `<span class="font-secondary">${initials}</span>`
+                    }
+                  </div>
+                  <!-- Nom complet -->
+                  <p class="text-sm font-medium text-gray-900 font-secondary mb-1">${user?.name} ${user?.lastname}</p>
+                  <!-- Email -->
+                  <p class="text-xs text-gray-500 font-secondary">${user?.email}</p>
+                </div>
+
+                <!-- Items du menu - Espacés -->
                 <div class="py-2">
-                  <a href="/profil" class="block px-4 py-2 text-sm font-secondary text-gray-700 hover:bg-gray-50 transition-colors">
+                  <a href="/profil" class="flex items-center px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-secondary">
+                    <svg class="w-4 h-4 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
                     Mon profil
                   </a>
-                  <hr class="my-1">
-                  <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm font-secondary text-red-600 hover:bg-red-50 transition-colors">
+                  
+                  <a href="/configurator" class="flex items-center px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-secondary md:hidden">
+                    <svg class="w-4 h-4 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Configurateur
+                  </a>
+                  
+                  <a href="/panier" class="flex items-center px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-secondary md:hidden">
+                    <svg class="w-4 h-4 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                    </svg>
+                    Mon panier
+                  </a>
+
+                  <hr class="my-2 border-gray-100">
+                  
+                  <button id="logout-btn" class="flex items-center w-full px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-secondary text-left">
+                    <svg class="w-4 h-4 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
                     Se déconnecter
                   </button>
                 </div>
@@ -124,19 +220,57 @@ import Button from "./ui/Button.astro";
             </div>
           `;
 
-          // Ajouter l'événement de déconnexion
+          // Événement de déconnexion
           const logoutBtn = document.querySelector("#logout-btn");
           logoutBtn?.addEventListener("click", () => {
             AuthService.logout();
           });
+
+          // Gestion du clic sur le menu
+          const userMenuBtn = document.querySelector("#user-menu-btn");
+          const userMenu = document.querySelector("#user-menu");
+
+          userMenuBtn?.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isVisible = userMenu?.classList.contains("opacity-100");
+
+            if (isVisible) {
+              userMenu?.classList.remove("opacity-100", "visible", "scale-100");
+              userMenu?.classList.add("opacity-0", "invisible", "scale-95");
+            } else {
+              userMenu?.classList.remove("opacity-0", "invisible", "scale-95");
+              userMenu?.classList.add("opacity-100", "visible", "scale-100");
+            }
+          });
+
+          // Fermer en cliquant ailleurs
+          document.addEventListener("click", (e) => {
+            const target = e.target as Element;
+            const userMenuBtn = document.querySelector("#user-menu-btn");
+            const userMenu = document.querySelector("#user-menu");
+
+            if (
+              userMenu &&
+              userMenuBtn &&
+              !userMenuBtn.contains(target) &&
+              !userMenu.contains(target)
+            ) {
+              userMenu.classList.remove("opacity-100", "visible", "scale-100");
+              userMenu.classList.add("opacity-0", "invisible", "scale-95");
+            }
+          });
         } else {
-          // Interface utilisateur non connecté
+          // Interface non connecté - Minimaliste
           userActionsContainer.innerHTML = `
-            <a href="/auth" class="flex items-center gap-1 text-bleu hover:text-rouge transition-all duration-300 hover:-translate-y-0.5">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-              </svg>
-              <span class="font-secondary text-sm">Se connecter</span>
+            <a href="/auth" class="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200 group">
+              <div class="w-6 h-6 rounded-full bg-[#003366] flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <span class="font-secondary text-sm text-gray-700 group-hover:text-[#003366] transition-colors">Se connecter</span>
             </a>
           `;
         }
@@ -145,22 +279,39 @@ import Button from "./ui/Button.astro";
       // Initialiser l'interface
       updateUserInterface();
 
-      // Écouter les changements d'état d'authentification
+      // Écouter les changements d'authentification
       AuthService.onAuthChange((isAuthenticated, user) => {
         updateUserInterface();
       });
     } catch (error) {
       console.log("Erreur lors du chargement de l'authentification:", error);
 
-      // Interface de fallback
+      // Interface de fallback minimaliste
       userActionsContainer.innerHTML = `
-        <a href="/auth" class="flex items-center gap-1 text-bleu hover:text-rouge transition-all duration-300 hover:-translate-y-0.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-          </svg>
-          <span class="font-secondary text-sm">Se connecter</span>
+        <a href="/auth" class="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200 group">
+          <div class="w-6 h-6 rounded-full bg-[#003366] flex items-center justify-center">
+            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <span class="font-secondary text-sm text-gray-700 group-hover:text-[#003366] transition-colors">Se connecter</span>
         </a>
       `;
     }
   });
 </script>
+
+<style>
+  /* Animations douces et minimalistes */
+  #user-menu {
+    transform-origin: top right;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+</style>

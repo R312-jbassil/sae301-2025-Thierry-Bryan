@@ -2,11 +2,16 @@ import type PocketBase from 'pocketbase';
 
 export interface User {
   id: string;
-  nom: string;
-  prenom: string;
+  name: string;
+  lastname: string;
   email: string;
+  avatar?: string;
+  avatarUrl?: string; // Parfois utilisé par OAuth2
+  picture?: string;   // Champ Google OAuth2
   created: string;
   updated: string;
+  // Champs supplémentaires pour OAuth2
+  [key: string]: any;
 }
 
 export interface Lunette {

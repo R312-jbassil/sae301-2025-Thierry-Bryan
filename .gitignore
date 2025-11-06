@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 pocketbase/*.md
 pocketbase/pocketbase
+
+# PocketBase data files
+Backend/pocketbase/pb_data/storage/
+Backend/pocketbase/pb_data/logs/
+Backend/pocketbase/pb_data/**/*.attrs

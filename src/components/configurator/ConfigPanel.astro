@@ -10,89 +10,153 @@ const { price = "249€" } = Astro.props;
 ---
 
 <!-- Section droite : Configuration Forme & Matériau (1/3) -->
-<div class="bg-gray-50 flex flex-col h-full">
+<div class="bg-white flex flex-col h-full border-l border-gray-100">
   
   <!-- Contenu scrollable -->
-  <div class="flex-1 overflow-y-auto p-4">
+  <div class="flex-1 overflow-y-auto p-6">
     
     <!-- Header de la section -->
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between mb-6">
       <div>
-        <h2 class="font-primary text-lg text-[#003366] mb-1">Votre Modèle Personnalisé</h2>
-        <p class="font-secondary text-gray-600 text-xs">Fabrication Française</p>
+        <h2 class="font-secondary text-xl font-medium text-gray-900 mb-1">Configuration</h2>
+        <p class="font-secondary text-sm text-gray-500">Personnalisez votre monture</p>
       </div>
-      <div class="text-[#003366] font-secondary font-bold text-base">
-        {price}
+      <div class="bg-gray-50 px-3 py-2 rounded-lg">
+        <span class="text-gray-900 font-secondary font-semibold text-lg">{price}</span>
       </div>
     </div>
 
-    <!-- Barre de séparation -->
-    <div class="h-px bg-gray-200 mb-4"></div>
-
-    <!-- Section Matériau Monture -->
-    <div class="mb-4">
-      <h3 class="font-secondary font-semibold text-[#003366] mb-3">Matériau Monture</h3>
+    <!-- Section Matériau -->
+    <div class="mb-8">
+      <h3 class="font-secondary font-medium text-gray-900 mb-4">Matériau</h3>
       
-      <div class="grid grid-cols-1 gap-3">
-        <!-- Acétate Artisanal (sélectionné) -->
-        <button class="material-btn flex h-12 px-4 items-center rounded-[14px] bg-[#003366] text-white font-secondary font-medium transition-colors duration-300 hover:bg-[#830000]" data-material-id="1" data-material-name="Acétate Artisanal">
-          Acétate Artisanal
+      <div class="grid grid-cols-3 gap-3">
+        <!-- Plastique (sélectionné) -->
+        <button class="material-btn group flex flex-col items-center p-4 rounded-xl bg-gray-50 border-2 border-gray-900 text-gray-900 font-secondary transition-all duration-200 hover:bg-gray-100" data-material-id="1" data-material-name="Plastique">
+          <div class="w-8 h-8 mb-2 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <circle cx="8" cy="8" r="1" fill="currentColor"/>
+              <circle cx="16" cy="8" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <span class="text-sm font-medium">Plastique</span>
+          <span class="text-xs text-gray-500 mt-1">Léger</span>
         </button>
         
-        <!-- Métal Léger -->
-        <button class="material-btn flex h-12 px-4 items-center rounded-[14px] bg-white border-2 border-gray-200 text-gray-600 font-secondary font-medium transition-colors duration-300 hover:border-[#003366] hover:text-[#003366]" data-material-id="2" data-material-name="Métal Léger">
-          Métal Léger
+        <!-- Métal -->
+        <button class="material-btn group flex flex-col items-center p-4 rounded-xl bg-white border border-gray-200 text-gray-600 font-secondary transition-all duration-200 hover:border-gray-300 hover:bg-gray-50" data-material-id="2" data-material-name="Métal">
+          <div class="w-8 h-8 mb-2 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x="4" y="4" width="16" height="16" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1"/>
+              <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1"/>
+            </svg>
+          </div>
+          <span class="text-sm font-medium">Métal</span>
+          <span class="text-xs text-gray-500 mt-1">Solide</span>
         </button>
         
-        <!-- Bois Laminé -->
-        <button class="material-btn flex h-12 px-4 items-center rounded-[14px] bg-white border-2 border-gray-200 text-gray-600 font-secondary font-medium transition-colors duration-300 hover:border-[#003366] hover:text-[#003366]" data-material-id="3" data-material-name="Bois Laminé">
-          Bois Laminé
+        <!-- Bois -->
+        <button class="material-btn group flex flex-col items-center p-4 rounded-xl bg-white border border-gray-200 text-gray-600 font-secondary transition-all duration-200 hover:border-gray-300 hover:bg-gray-50" data-material-id="3" data-material-name="Bois">
+          <div class="w-8 h-8 mb-2 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="m6 6 12 12M6 18l12-12" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+            </svg>
+          </div>
+          <span class="text-sm font-medium">Bois</span>
+          <span class="text-xs text-gray-500 mt-1">Naturel</span>
         </button>
       </div>
     </div>
 
-    <!-- Section Couleur Monture -->
-    <div class="mb-4">
-      <h3 class="font-secondary font-semibold text-[#003366] mb-3">Couleur Monture</h3>
-      <div class="flex gap-3 justify-start">
-        <!-- Couleurs disponibles -->
+    <!-- Section Couleur -->
+    <div class="mb-8">
+      <h3 class="font-secondary font-medium text-gray-900 mb-4">Couleur</h3>
+      
+      <div class="grid grid-cols-4 gap-3 mb-4">
+        <!-- Palette harmonieuse moderne -->
         <button 
-          data-color="#000000" 
-          class="color-btn w-12 h-12 bg-black rounded-full border-4 border-[#003366] transition-transform hover:scale-110"
+          data-color="#2563eb" 
+          class="color-btn w-10 h-10 bg-blue-600 rounded-lg border-3 border-blue-600 shadow-sm transition-all hover:scale-105 hover:shadow-md"
+          title="Bleu océan"
         ></button>
         <button 
-          data-color="#b45309" 
-          class="color-btn w-12 h-12 bg-amber-700 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+          data-color="#7c3aed" 
+          class="color-btn w-10 h-10 bg-violet-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-violet-600"
+          title="Violet moderne"
         ></button>
         <button 
-          data-color="#003366" 
-          class="color-btn w-12 h-12 bg-[#003366] rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+          data-color="#059669" 
+          class="color-btn w-10 h-10 bg-emerald-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-emerald-600"
+          title="Vert émeraude"
         ></button>
         <button 
-          data-color="#830000" 
-          class="color-btn w-12 h-12 bg-[#830000] rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+          data-color="#dc2626" 
+          class="color-btn w-10 h-10 bg-red-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-red-600"
+          title="Rouge cerise"
         ></button>
         <button 
-          data-color="#15803d" 
-          class="color-btn w-12 h-12 bg-green-700 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
+          data-color="#ea580c" 
+          class="color-btn w-10 h-10 bg-orange-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-orange-600"
+          title="Orange mandarine"
         ></button>
+        <button 
+          data-color="#0891b2" 
+          class="color-btn w-10 h-10 bg-cyan-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-cyan-600"
+          title="Cyan tropical"
+        ></button>
+        <button 
+          data-color="#4338ca" 
+          class="color-btn w-10 h-10 bg-indigo-700 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-indigo-700"
+          title="Indigo profond"
+        ></button>
+        <button 
+          data-color="#374151" 
+          class="color-btn w-10 h-10 bg-gray-700 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-gray-700"
+          title="Gris anthracite"
+        ></button>
+      </div>
+
+      <!-- Sélecteur de couleur personnalisée -->
+      <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+        <button 
+          id="custom-color-btn"
+          class="flex items-center justify-center w-10 h-10 bg-linear-to-br from-purple-400 to-pink-400 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-gray-400"
+          title="Couleur personnalisée"
+        >
+          <svg class="w-5 h-5 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+        <input 
+          type="color" 
+          id="custom-color-picker" 
+          class="hidden"
+          value="#2563eb"
+        />
+        <span class="text-sm text-gray-500 font-secondary">Couleur personnalisée</span>
       </div>
     </div>
 
   </div>
 
   <!-- Boutons de navigation (toujours visibles) -->
-  <div class="bg-gray-50 border-t border-gray-200 p-4">
+  <div class="bg-white border-t border-gray-100 p-6">
     <div class="flex justify-between items-center">
-      <button id="prev-step" class="flex items-center gap-2 text-[#003366] font-secondary transition-colors hover:text-[#830000] opacity-50 cursor-not-allowed">
+      <button id="prev-step" class="flex items-center gap-2 text-gray-400 font-secondary text-sm transition-colors hover:text-gray-600 opacity-50 cursor-not-allowed">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Précédent
       </button>
       
-      <button id="next-step" class="flex h-12 px-6 items-center rounded-[14px] bg-[#003366] text-white font-secondary font-medium transition-colors duration-300 hover:bg-[#830000]">
+      <button id="next-step" class="flex h-10 px-6 items-center rounded-lg bg-gray-900 text-white font-secondary font-medium transition-all duration-200 hover:bg-gray-800 hover:shadow-md">
         Suivant
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
       </button>
     </div>
   </div>
@@ -113,12 +177,12 @@ const { price = "249€" } = Astro.props;
         
         // Mise à jour de l'interface
         materialButtons.forEach(btn => {
-          btn.classList.remove('bg-[#003366]', 'text-white');
-          btn.classList.add('bg-white', 'border-2', 'border-gray-200', 'text-gray-600');
+          btn.classList.remove('bg-gray-50', 'border-gray-900', 'text-gray-900');
+          btn.classList.add('bg-white', 'border-gray-200', 'text-gray-600');
         });
         
-        button.classList.remove('bg-white', 'border-2', 'border-gray-200', 'text-gray-600');
-        button.classList.add('bg-[#003366]', 'text-white');
+        button.classList.remove('bg-white', 'border-gray-200', 'text-gray-600');
+        button.classList.add('bg-gray-50', 'border-gray-900', 'text-gray-900');
         
         // Dispatch d'un événement personnalisé
         window.dispatchEvent(new CustomEvent('materialChange', { 
@@ -134,12 +198,18 @@ const { price = "249€" } = Astro.props;
         
         // Mise à jour de l'interface
         colorButtons.forEach(btn => {
-          btn.classList.remove('border-4', 'border-[#003366]');
-          btn.classList.add('border-2', 'border-gray-200');
+          const htmlBtn = btn as HTMLElement;
+          htmlBtn.classList.remove('border-3');
+          htmlBtn.classList.add('border-2', 'border-gray-200');
+          htmlBtn.style.borderColor = '';
         });
         
-        button.classList.remove('border-2', 'border-gray-200');
-        button.classList.add('border-4', 'border-[#003366]');
+        const htmlButton = button as HTMLElement;
+        htmlButton.classList.remove('border-2', 'border-gray-200');
+        htmlButton.classList.add('border-3');
+        if (selectedColor) {
+          htmlButton.style.borderColor = selectedColor;
+        }
         
         // Mise à jour de la couleur du SVG
         document.documentElement.style.setProperty('--frame-color', selectedColor);
@@ -149,6 +219,43 @@ const { price = "249€" } = Astro.props;
           detail: { color: selectedColor } 
         }));
       });
+    });
+
+    // Gestion du sélecteur de couleur personnalisée
+    const customColorBtn = document.getElementById('custom-color-btn');
+    const customColorPicker = document.getElementById('custom-color-picker') as HTMLInputElement;
+
+    customColorBtn?.addEventListener('click', () => {
+      customColorPicker.click();
+    });
+
+    customColorPicker?.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      const selectedColor = target.value;
+      
+      // Désélectionner toutes les couleurs prédéfinies
+      colorButtons.forEach(btn => {
+        const htmlBtn = btn as HTMLElement;
+        htmlBtn.classList.remove('border-3');
+        htmlBtn.classList.add('border-2', 'border-gray-200');
+        htmlBtn.style.borderColor = '';
+      });
+
+      // Mettre à jour le bouton personnalisé
+      if (customColorBtn) {
+        customColorBtn.style.background = selectedColor;
+        customColorBtn.classList.remove('border-2', 'border-gray-200');
+        customColorBtn.classList.add('border-3');
+        customColorBtn.style.borderColor = selectedColor;
+      }
+
+      // Mise à jour de la couleur du SVG
+      document.documentElement.style.setProperty('--frame-color', selectedColor);
+      
+      // Dispatch d'un événement personnalisé
+      window.dispatchEvent(new CustomEvent('frameColorChange', { 
+        detail: { color: selectedColor, custom: true } 
+      }));
     });
 
     // Écouter l'événement de chargement d'une création existante

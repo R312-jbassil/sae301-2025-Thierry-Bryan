@@ -40,11 +40,27 @@ const { frameColor = "#1d1d1b" } = Astro.props;
       <!-- Style pour les verres avec teinte dynamique -->
       <style>
         #verres .lens {
-          fill: var(--lens-color, #ffffff);
+          fill: var(--lens-color, rgba(255,255,255,0.05));
           stroke: #d1d5db;
           stroke-width: 1px;
-          opacity: var(--lens-opacity, 1);
+          opacity: var(--lens-opacity, 0.15);
           transition: fill 0.3s ease, opacity 0.3s ease;
+        }
+        
+        /* Verres transparents - laissent voir l'arrière */
+        #verres .lens.transparent {
+          fill: rgba(255,255,255,0.05);
+          stroke: rgba(209,213,219,0.3);
+          stroke-width: 0.5px;
+          opacity: 0.15;
+        }
+        
+        /* Verres colorés - plus opaques */
+        #verres .lens.colored {
+          fill: var(--lens-color);
+          stroke: var(--lens-color);
+          stroke-width: 0.5px;
+          opacity: 0.7;
         }
       </style>
       

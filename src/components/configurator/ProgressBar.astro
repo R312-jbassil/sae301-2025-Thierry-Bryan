@@ -15,30 +15,32 @@ const steps = [
 ];
 ---
 
-<!-- Barre de progression -->
-<div class="px-6 pt-6 pb-2">
-  <div class="flex items-center justify-between max-w-4xl mx-auto" id="progress-bar">
-    {steps.map((step, index) => (
-      <>
-        <!-- Étape -->
-        <div class="flex items-center">
-          <div class={`step-indicator flex items-center justify-center w-6 h-6 rounded-full font-secondary font-medium text-xs transition-all duration-300`}
-               data-step={step.id}>
-            {step.id}
+<!-- Barre de progression moderne -->
+<div class="bg-white border-b border-gray-100 px-6 py-4">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex items-center justify-between" id="progress-bar">
+      {steps.map((step, index) => (
+        <>
+          <!-- Étape -->
+          <div class="flex flex-col items-center min-w-0 flex-1">
+            <div class={`step-indicator flex items-center justify-center w-8 h-8 rounded-xl font-secondary font-semibold text-sm transition-all duration-300 mb-2`}
+                 data-step={step.id}>
+              {step.id}
+            </div>
+            <span class={`step-label font-secondary text-xs transition-all duration-300 text-center leading-tight`}
+                  data-step={step.id}>
+              {step.label}
+            </span>
           </div>
-          <span class={`step-label ml-2 font-secondary font-medium text-sm transition-all duration-300`}
-                data-step={step.id}>
-            {step.label}
-          </span>
-        </div>
-        
-        <!-- Ligne de connexion (sauf pour le dernier) -->
-        {index < steps.length - 1 && (
-          <div class="step-connector flex-1 h-0.5 bg-gray-200 mx-3 transition-all duration-300" 
-               data-step={step.id}></div>
-        )}
-      </>
-    ))}
+          
+          <!-- Ligne de connexion (sauf pour le dernier) -->
+          {index < steps.length - 1 && (
+            <div class="step-connector flex-1 h-0.5 mx-4 rounded-full transition-all duration-300 -mt-5" 
+                 data-step={step.id}></div>
+          )}
+        </>
+      ))}
+    </div>
   </div>
 </div>
 
@@ -52,24 +54,36 @@ const steps = [
     stepIndicators.forEach((indicator) => {
       const stepId = parseInt(indicator.getAttribute('data-step') || '0');
       
-      if (stepId <= currentStep) {
-        indicator.classList.remove('bg-gray-200', 'text-gray-400');
-        indicator.classList.add('bg-[#003366]', 'text-white');
+      if (stepId === currentStep) {
+        // Étape active
+        indicator.classList.remove('bg-gray-200', 'text-gray-500', 'bg-gray-800', 'text-white');
+        indicator.classList.add('bg-gray-900', 'text-white', 'shadow-lg');
+      } else if (stepId < currentStep) {
+        // Étape complétée
+        indicator.classList.remove('bg-gray-200', 'text-gray-500', 'bg-gray-900', 'shadow-lg');
+        indicator.classList.add('bg-gray-800', 'text-white');
       } else {
-        indicator.classList.remove('bg-[#003366]', 'text-white');
-        indicator.classList.add('bg-gray-200', 'text-gray-400');
+        // Étape non atteinte
+        indicator.classList.remove('bg-gray-800', 'text-white', 'bg-gray-900', 'shadow-lg');
+        indicator.classList.add('bg-gray-200', 'text-gray-500');
       }
     });
 
     stepLabels.forEach((label) => {
       const stepId = parseInt(label.getAttribute('data-step') || '0');
       
-      if (stepId <= currentStep) {
-        label.classList.remove('text-gray-400');
-        label.classList.add('text-[#003366]');
+      if (stepId === currentStep) {
+        // Étape active
+        label.classList.remove('text-gray-500', 'text-gray-800');
+        label.classList.add('text-gray-900', 'font-semibold');
+      } else if (stepId < currentStep) {
+        // Étape complétée
+        label.classList.remove('text-gray-500', 'text-gray-900', 'font-semibold');
+        label.classList.add('text-gray-800', 'font-medium');
       } else {
-        label.classList.remove('text-[#003366]');
-        label.classList.add('text-gray-400');
+        // Étape non atteinte
+        label.classList.remove('text-gray-800', 'text-gray-900', 'font-semibold', 'font-medium');
+        label.classList.add('text-gray-500');
       }
     });
 
@@ -79,9 +93,9 @@ const steps = [
       
       if (stepId < currentStep) {
         connector.classList.remove('bg-gray-200');
-        connector.classList.add('bg-[#003366]');
+        connector.classList.add('bg-gray-800');
       } else {
-        connector.classList.remove('bg-[#003366]');
+        connector.classList.remove('bg-gray-800');
         connector.classList.add('bg-gray-200');
       }
     });

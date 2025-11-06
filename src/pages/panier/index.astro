@@ -115,7 +115,25 @@ import Layout from "../../layouts/Layout.astro";
               <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden flex items-center justify-center p-4">
                 ${lunette.code_svg ? `
                   <div class="w-full h-full flex items-center justify-center">
-                    ${lunette.code_svg}
+                    ${(() => {
+                      let svgContent = lunette.code_svg;
+                      
+                      // Le SVG sauvegardé a déjà les couleurs intégrées
+                      if (lunette.couleur_verres === 'transparent' || !lunette.couleur_verres) {
+                        // Pour les verres transparents, remplacer la couleur par blanc dans le groupe verres
+                        svgContent = svgContent.replace(
+                          /<g id="verres">(.*?)<\/g>/s,
+                          (match, content) => {
+                            // Remplacer tous les fills dans le groupe verres par blanc
+                            const whiteContent = content.replace(/fill="[^"]*"/g, 'fill="white"');
+                            return `<g id="verres">${whiteContent}</g>`;
+                          }
+                        );
+                      }
+                      // Pour les verres colorés, le SVG a déjà la bonne couleur
+                      
+                      return svgContent;
+                    })()}
                   </div>
                 ` : `
                   <div class="flex items-center justify-center">
@@ -128,8 +146,14 @@ import Layout from "../../layouts/Layout.astro";
                 
                 <!-- Badge de couleurs -->
                 <div class="absolute top-3 left-3 flex gap-2">
-                  <div class="w-4 h-4 rounded-full border-2 border-white shadow-sm" style="background-color: ${lunette.couleur_monture}"></div>
-                  <div class="w-4 h-4 rounded-full border-2 border-white shadow-sm" style="background-color: ${lunette.couleur_branches}"></div>
+                  <div class="w-4 h-4 rounded-full border-2 border-white shadow-sm" style="background-color: ${lunette.couleur_monture}" title="Monture"></div>
+                  <div class="w-4 h-4 rounded-full border-2 border-white shadow-sm" style="background-color: ${lunette.couleur_branches}" title="Branches"></div>
+                  ${lunette.couleur_verres && lunette.couleur_verres !== 'transparent' ? 
+                    `<div class="w-4 h-4 rounded-full border-2 border-white shadow-sm" style="background-color: ${lunette.couleur_verres}" title="Verres"></div>` : 
+                    `<div class="w-4 h-4 rounded-full border-2 border-gray-300 shadow-sm bg-white bg-opacity-80" title="Verres transparents">
+                       <div class="w-full h-full rounded-full bg-gradient-to-br from-white to-gray-50 opacity-60"></div>
+                     </div>`
+                  }
                 </div>
               </div>
 
@@ -147,6 +171,12 @@ import Layout from "../../layouts/Layout.astro";
                   <div class="flex justify-between text-sm">
                     <span class="font-secondary text-gray-600">Dimensions:</span>
                     <span class="font-secondary text-gray-800">${lunette.taille_verres}mm × ${lunette.largeur_pont}mm</span>
+                  </div>
+                  <div class="flex justify-between text-sm">
+                    <span class="font-secondary text-gray-600">Verres:</span>
+                    <span class="font-secondary text-gray-800">
+                      ${lunette.couleur_verres === 'transparent' || !lunette.couleur_verres ? 'Transparents' : 'Teintés'}
+                    </span>
                   </div>
                 </div>
 

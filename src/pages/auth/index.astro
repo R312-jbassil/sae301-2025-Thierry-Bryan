@@ -392,8 +392,8 @@ const redirectParam = url.searchParams.get("redirect") || "/configurator";
 
         // Création du compte
         const userData = {
-          prenom: prenom,
-          nom: nom,
+          name: prenom,
+          lastname: nom,
           email: email,
           password: password,
           passwordConfirm: passwordConfirm,
@@ -477,6 +477,45 @@ const redirectParam = url.searchParams.get("redirect") || "/configurator";
         console.log("PocketBase non disponible ou erreur de vérification");
       }
     }
+
+    // Gestion de la connexion Google
+    const googleSigninBtn = document.querySelector("#google-signin");
+    googleSigninBtn?.addEventListener("click", async (e) => {
+      e.preventDefault();
+      
+      try {
+        // Désactiver le bouton pendant la connexion
+        const btn = e.currentTarget as HTMLButtonElement;
+        btn.textContent = "Connexion avec Google...";
+        btn.disabled = true;
+
+        // Import PocketBase
+        const pbModule = await import("../../utils/pb");
+        const pb = pbModule.default;
+
+        // Connexion OAuth2 Google
+        await pb.collection("users").authWithOAuth2({ provider: 'google' });
+        
+        console.log("Connexion Google réussie");
+        showMessage("Connexion Google réussie ! Redirection...", "success");
+        
+        // Redirection après connexion
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 1500);
+
+      } catch (error: any) {
+        console.error("Erreur connexion Google:", error);
+        showMessage("Échec de connexion Google. Veuillez réessayer.", "error");
+        
+        // Restaurer le bouton
+        const btn = e.currentTarget as HTMLButtonElement;
+        if (btn) {
+          btn.textContent = "Continuer avec Google";
+          btn.disabled = false;
+        }
+      }
+    });
 
     // Vérifier l'état de connexion au chargement
     checkAuthStatus();

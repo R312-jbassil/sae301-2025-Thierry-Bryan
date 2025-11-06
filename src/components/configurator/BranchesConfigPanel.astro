@@ -10,89 +10,105 @@ const { price = "249€" } = Astro.props;
 ---
 
 <!-- Section droite : Configuration Branches (2/5) -->
-<div class="bg-gray-50 flex flex-col h-full">
+<div class="bg-white flex flex-col h-full border-l border-gray-100">
   <!-- Contenu scrollable -->
-  <div class="flex-1 overflow-y-auto p-4">
+  <div class="flex-1 overflow-y-auto p-6">
     <!-- Header de la section -->
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between mb-6">
       <div>
-        <h2 class="font-primary text-lg text-[#003366] mb-1">
-          Votre Modèle Personnalisé
-        </h2>
-        <p class="font-secondary text-gray-600 text-xs">
-          Fabrication Française
-        </p>
+        <h2 class="font-secondary text-xl font-medium text-gray-900 mb-1">Branches</h2>
+        <p class="font-secondary text-sm text-gray-500">Couleur des branches</p>
       </div>
-      <div class="text-[#003366] font-secondary font-bold text-base">
-        {price}
+      <div class="bg-gray-50 px-3 py-2 rounded-lg">
+        <span class="text-gray-900 font-secondary font-semibold text-lg">{price}</span>
       </div>
     </div>
 
-    <!-- Barre de séparation -->
-    <div class="h-px bg-gray-200 mb-4"></div>
+    <!-- Section Couleur -->
+    <div class="mb-8">
+      <h3 class="font-secondary font-medium text-gray-900 mb-4">Couleur</h3>
+      
+      <div class="grid grid-cols-4 gap-3 mb-4">
+        <!-- Palette harmonieuse moderne -->
+        <button 
+          data-branch-color="#2563eb" 
+          class="branch-color-btn w-10 h-10 bg-blue-600 rounded-lg border-3 border-blue-600 shadow-sm transition-all hover:scale-105 hover:shadow-md"
+          title="Bleu océan"
+        ></button>
+        <button 
+          data-branch-color="#7c3aed" 
+          class="branch-color-btn w-10 h-10 bg-violet-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-violet-600"
+          title="Violet moderne"
+        ></button>
+        <button 
+          data-branch-color="#059669" 
+          class="branch-color-btn w-10 h-10 bg-emerald-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-emerald-600"
+          title="Vert émeraude"
+        ></button>
+        <button 
+          data-branch-color="#dc2626" 
+          class="branch-color-btn w-10 h-10 bg-red-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-red-600"
+          title="Rouge cerise"
+        ></button>
+        <button 
+          data-branch-color="#ea580c" 
+          class="branch-color-btn w-10 h-10 bg-orange-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-orange-600"
+          title="Orange mandarine"
+        ></button>
+        <button 
+          data-branch-color="#0891b2" 
+          class="branch-color-btn w-10 h-10 bg-cyan-600 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-cyan-600"
+          title="Cyan tropical"
+        ></button>
+        <button 
+          data-branch-color="#4338ca" 
+          class="branch-color-btn w-10 h-10 bg-indigo-700 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-indigo-700"
+          title="Indigo profond"
+        ></button>
+        <button 
+          data-branch-color="#374151" 
+          class="branch-color-btn w-10 h-10 bg-gray-700 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-gray-700"
+          title="Gris anthracite"
+        ></button>
+      </div>
 
-    <!-- Section Couleur Branches -->
-    <div class="mb-4">
-      <h3 class="font-secondary font-semibold text-[#003366] mb-3">
-        Couleur Branches
-      </h3>
-      <div class="flex gap-3 justify-start flex-wrap">
-        <!-- Couleurs disponibles -->
-        <button
-          data-branch-color="#000000"
-          class="branch-color-btn w-12 h-12 bg-black rounded-full border-4 border-[#003366] transition-transform hover:scale-110"
-        ></button>
-        <button
-          data-branch-color="#b45309"
-          class="branch-color-btn w-12 h-12 bg-amber-700 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
-        ></button>
-        <button
-          data-branch-color="#003366"
-          class="branch-color-btn w-12 h-12 bg-[#003366] rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
-        ></button>
-        <button
-          data-branch-color="#830000"
-          class="branch-color-btn w-12 h-12 bg-[#830000] rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
-        ></button>
-        <button
-          data-branch-color="#15803d"
-          class="branch-color-btn w-12 h-12 bg-green-700 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
-        ></button>
-        <button
-          data-branch-color="#9333ea"
-          class="branch-color-btn w-12 h-12 bg-purple-600 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366]"
-        ></button>
+      <!-- Sélecteur de couleur personnalisée -->
+      <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+        <button 
+          id="custom-branch-color-btn"
+          class="flex items-center justify-center w-10 h-10 bg-linear-to-br from-purple-400 to-pink-400 rounded-lg border-2 border-gray-200 shadow-sm transition-all hover:scale-105 hover:shadow-md hover:border-gray-400"
+          title="Couleur personnalisée"
+        >
+          <svg class="w-5 h-5 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+        <input 
+          type="color" 
+          id="custom-branch-color-picker" 
+          class="hidden"
+          value="#2563eb"
+        />
+        <span class="text-sm text-gray-500 font-secondary">Couleur personnalisée</span>
       </div>
     </div>
   </div>
 
   <!-- Boutons de navigation (toujours visibles) -->
-  <div class="bg-gray-50 border-t border-gray-200 p-4">
+  <div class="bg-white border-t border-gray-100 p-6">
     <div class="flex justify-between items-center">
-      <button
-        id="prev-step"
-        class="flex items-center gap-2 text-[#003366] font-secondary transition-colors hover:text-[#830000]"
-      >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 19l-7-7 7-7"></path>
+      <button id="prev-step" class="flex items-center gap-2 text-gray-600 font-secondary text-sm transition-colors hover:text-gray-900">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Précédent
       </button>
-
-      <button
-        id="next-step"
-        class="flex h-12 px-6 items-center rounded-[14px] bg-[#003366] text-white font-secondary font-medium transition-colors duration-300 hover:bg-[#830000]"
-      >
+      
+      <button id="next-step" class="flex h-10 px-6 items-center rounded-lg bg-gray-900 text-white font-secondary font-medium transition-all duration-200 hover:bg-gray-800 hover:shadow-md">
         Suivant
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
       </button>
     </div>
   </div>
@@ -112,12 +128,18 @@ const { price = "249€" } = Astro.props;
 
         // Mise à jour de l'interface
         branchColorButtons.forEach((btn) => {
-          btn.classList.remove("border-4", "border-[#003366]");
-          btn.classList.add("border-2", "border-gray-200");
+          const htmlBtn = btn as HTMLElement;
+          htmlBtn.classList.remove("border-3");
+          htmlBtn.classList.add("border-2", "border-gray-200");
+          htmlBtn.style.borderColor = '';
         });
 
-        button.classList.remove("border-2", "border-gray-200");
-        button.classList.add("border-4", "border-[#003366]");
+        const htmlButton = button as HTMLElement;
+        htmlButton.classList.remove("border-2", "border-gray-200");
+        htmlButton.classList.add("border-3");
+        if (selectedColor) {
+          htmlButton.style.borderColor = selectedColor;
+        }
 
         // Mise à jour de la couleur des branches du SVG
         document.documentElement.style.setProperty(
@@ -132,6 +154,43 @@ const { price = "249€" } = Astro.props;
           })
         );
       });
+    });
+
+    // Gestion du sélecteur de couleur personnalisée
+    const customBranchColorBtn = document.getElementById('custom-branch-color-btn');
+    const customBranchColorPicker = document.getElementById('custom-branch-color-picker') as HTMLInputElement;
+
+    customBranchColorBtn?.addEventListener('click', () => {
+      customBranchColorPicker.click();
+    });
+
+    customBranchColorPicker?.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      const selectedColor = target.value;
+      
+      // Désélectionner toutes les couleurs prédéfinies
+      branchColorButtons.forEach(btn => {
+        const htmlBtn = btn as HTMLElement;
+        htmlBtn.classList.remove('border-3');
+        htmlBtn.classList.add('border-2', 'border-gray-200');
+        htmlBtn.style.borderColor = '';
+      });
+
+      // Mettre à jour le bouton personnalisé
+      if (customBranchColorBtn) {
+        customBranchColorBtn.style.background = selectedColor;
+        customBranchColorBtn.classList.remove('border-2', 'border-gray-200');
+        customBranchColorBtn.classList.add('border-3');
+        customBranchColorBtn.style.borderColor = selectedColor;
+      }
+
+      // Mise à jour de la couleur du SVG
+      document.documentElement.style.setProperty('--branch-color', selectedColor);
+      
+      // Dispatch d'un événement personnalisé
+      window.dispatchEvent(new CustomEvent('branchColorChange', { 
+        detail: { color: selectedColor, custom: true } 
+      }));
     });
 
     // Écouter l'événement de chargement d'une création existante

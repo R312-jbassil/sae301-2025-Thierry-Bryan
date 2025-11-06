@@ -10,42 +10,37 @@ const { price = "249€" } = Astro.props;
 ---
 
 <!-- Section droite : Configuration Verres (3/5) -->
-<div class="bg-gray-50 flex flex-col h-full">
+<div class="bg-white flex flex-col h-full border-l border-gray-100">
   <!-- Contenu scrollable -->
-  <div class="flex-1 overflow-y-auto p-4">
+  <div class="flex-1 overflow-y-auto p-6">
     <!-- Header de la section -->
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between mb-6">
       <div>
-        <h2 class="font-primary text-lg text-[#003366] mb-1">
-          Votre Modèle Personnalisé
-        </h2>
-        <p class="font-secondary text-gray-600 text-xs">
-          Fabrication Française
-        </p>
+        <h2 class="font-secondary text-xl font-medium text-gray-900 mb-1">Verres</h2>
+        <p class="font-secondary text-sm text-gray-500">Teinte des verres</p>
       </div>
-      <div class="text-[#003366] font-secondary font-bold text-base">
-        {price}
+      <div class="bg-gray-50 px-3 py-2 rounded-lg">
+        <span class="text-gray-900 font-secondary font-semibold text-lg">{price}</span>
       </div>
     </div>
 
-    <!-- Barre de séparation -->
-    <div class="h-px bg-gray-200 mb-4"></div>
-
-    <!-- Section Teinte des Verres -->
-    <div class="mb-4">
-      <h3 class="font-secondary font-semibold text-[#003366] mb-3">
-        Teinte des Verres
-      </h3>
-      <div class="grid grid-cols-4 gap-3 mb-4">
+    <!-- Section Teinte -->
+    <div class="mb-8">
+      <h3 class="font-secondary font-medium text-gray-900 mb-4">Teinte</h3>
+      
+      <div class="grid grid-cols-3 gap-4 mb-6">
         <!-- Verres transparents (sélectionnés) -->
         <button
           data-lens-color="transparent"
           data-lens-fill="#ffffff"
           data-lens-opacity="1"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-4 border-[#003366] transition-transform hover:scale-110 flex items-center justify-center"
+          class="lens-color-btn group flex flex-col items-center p-4 rounded-xl bg-gray-50 border-2 border-gray-900 transition-all duration-200 hover:bg-gray-100"
+          title="Transparent"
         >
-          <div class="w-10 h-10 bg-white border-2 border-gray-300 rounded-full">
+          <div class="w-12 h-12 mb-3 flex items-center justify-center">
+            <div class="w-8 h-8 bg-white border-2 border-gray-300 rounded-full shadow-sm"></div>
           </div>
+          <span class="text-sm font-medium text-gray-900">Transparent</span>
         </button>
 
         <!-- Verres gris -->
@@ -53,9 +48,13 @@ const { price = "249€" } = Astro.props;
           data-lens-color="gray"
           data-lens-fill="#6b7280"
           data-lens-opacity="0.7"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+          class="lens-color-btn group flex flex-col items-center p-4 rounded-xl bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+          title="Gris léger"
         >
-          <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
+          <div class="w-12 h-12 mb-3 flex items-center justify-center">
+            <div class="w-8 h-8 bg-gray-500 rounded-full shadow-sm"></div>
+          </div>
+          <span class="text-sm font-medium text-gray-600">Gris léger</span>
         </button>
 
         <!-- Verres gris foncé -->
@@ -63,9 +62,13 @@ const { price = "249€" } = Astro.props;
           data-lens-color="dark-gray"
           data-lens-fill="#374151"
           data-lens-opacity="0.8"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+          class="lens-color-btn group flex flex-col items-center p-4 rounded-xl bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+          title="Gris foncé"
         >
-          <div class="w-10 h-10 bg-gray-700 rounded-full"></div>
+          <div class="w-12 h-12 mb-3 flex items-center justify-center">
+            <div class="w-8 h-8 bg-gray-700 rounded-full shadow-sm"></div>
+          </div>
+          <span class="text-sm font-medium text-gray-600">Gris foncé</span>
         </button>
 
         <!-- Verres bruns -->
@@ -73,88 +76,67 @@ const { price = "249€" } = Astro.props;
           data-lens-color="brown"
           data-lens-fill="#92400e"
           data-lens-opacity="0.7"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+          class="lens-color-btn group flex flex-col items-center p-4 rounded-xl bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+          title="Brun"
         >
-          <div class="w-10 h-10 bg-amber-700 rounded-full"></div>
+          <div class="w-12 h-12 mb-3 flex items-center justify-center">
+            <div class="w-8 h-8 bg-amber-700 rounded-full shadow-sm"></div>
+          </div>
+          <span class="text-sm font-medium text-gray-600">Brun</span>
         </button>
 
         <!-- Verres verts -->
         <button
           data-lens-color="green"
-          data-lens-fill="#166534"
+          data-lens-fill="#059669"
           data-lens-opacity="0.7"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+          class="lens-color-btn group flex flex-col items-center p-4 rounded-xl bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+          title="Vert"
         >
-          <div class="w-10 h-10 bg-green-700 rounded-full"></div>
+          <div class="w-12 h-12 mb-3 flex items-center justify-center">
+            <div class="w-8 h-8 bg-emerald-600 rounded-full shadow-sm"></div>
+          </div>
+          <span class="text-sm font-medium text-gray-600">Vert</span>
         </button>
 
         <!-- Verres bleus -->
         <button
           data-lens-color="blue"
-          data-lens-fill="#1e40af"
+          data-lens-fill="#2563eb"
           data-lens-opacity="0.7"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
+          class="lens-color-btn group flex flex-col items-center p-4 rounded-xl bg-white border border-gray-200 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+          title="Bleu"
         >
-          <div class="w-10 h-10 bg-blue-700 rounded-full"></div>
-        </button>
-
-        <!-- Verres jaunes -->
-        <button
-          data-lens-color="yellow"
-          data-lens-fill="#eab308"
-          data-lens-opacity="0.6"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
-        >
-          <div class="w-10 h-10 bg-yellow-500 rounded-full"></div>
-        </button>
-
-        <!-- Verres roses -->
-        <button
-          data-lens-color="pink"
-          data-lens-fill="#ec4899"
-          data-lens-opacity="0.6"
-          class="lens-color-btn w-16 h-16 bg-gray-100 rounded-full border-2 border-gray-200 transition-all hover:scale-110 hover:border-[#003366] flex items-center justify-center"
-        >
-          <div class="w-10 h-10 bg-pink-500 rounded-full"></div>
+          <div class="w-12 h-12 mb-3 flex items-center justify-center">
+            <div class="w-8 h-8 bg-blue-600 rounded-full shadow-sm"></div>
+          </div>
+          <span class="text-sm font-medium text-gray-600">Bleu</span>
         </button>
       </div>
 
-      <!-- Label transparence -->
-      <div class="text-center">
-        <span
-          class="font-secondary text-sm text-gray-600"
-          id="transparency-label">Transparent</span>
+      <!-- État de sélection -->
+      <div class="bg-gray-50 rounded-lg p-3 text-center">
+        <span class="font-secondary text-sm text-gray-600">Sélection: </span>
+        <span class="font-secondary text-sm font-medium text-gray-900" id="transparency-label">Transparent</span>
       </div>
     </div>
   </div>
 
   <!-- Boutons de navigation (toujours visibles) -->
-  <div class="bg-gray-50 border-t border-gray-200 p-4">
+  <div class="bg-white border-t border-gray-100 p-6">
     <div class="flex justify-between items-center">
-      <button
-        id="prev-step"
-        class="flex items-center gap-2 text-[#003366] font-secondary transition-colors hover:text-[#830000]"
-      >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 19l-7-7 7-7"></path>
+      <button id="prev-step" class="flex items-center gap-2 text-gray-600 font-secondary text-sm transition-colors hover:text-gray-900">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Précédent
       </button>
-
-      <button
-        id="next-step"
-        class="flex h-12 px-6 items-center rounded-[14px] bg-[#003366] text-white font-secondary font-medium transition-colors duration-300 hover:bg-[#830000]"
-      >
+      
+      <button id="next-step" class="flex h-10 px-6 items-center rounded-lg bg-gray-900 text-white font-secondary font-medium transition-all duration-200 hover:bg-gray-800 hover:shadow-md">
         Suivant
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
       </button>
     </div>
   </div>
@@ -178,12 +160,12 @@ const { price = "249€" } = Astro.props;
 
         // Mise à jour de l'interface
         lensColorButtons.forEach((btn) => {
-          btn.classList.remove("border-4", "border-[#003366]");
-          btn.classList.add("border-2", "border-gray-200");
+          btn.classList.remove("bg-gray-50", "border-gray-900", "text-gray-900");
+          btn.classList.add("bg-white", "border-gray-200", "text-gray-600");
         });
 
-        button.classList.remove("border-2", "border-gray-200");
-        button.classList.add("border-4", "border-[#003366]");
+        button.classList.remove("bg-white", "border-gray-200", "text-gray-600");
+        button.classList.add("bg-gray-50", "border-gray-900", "text-gray-900");
 
         // Mise à jour des variables CSS pour les verres
         document.documentElement.style.setProperty("--lens-color", lensFill);

@@ -10,71 +10,119 @@ const { price = "249€" } = Astro.props;
 ---
 
 <!-- Section droite : Actions Finales (5/5) -->
-<div class="bg-gray-50 flex flex-col h-full">
+<div class="bg-white flex flex-col h-full border-l border-gray-100">
   
   <!-- Contenu scrollable -->
-  <div class="flex-1 overflow-y-auto p-4">
+  <div class="flex-1 overflow-y-auto p-6">
     
     <!-- Header de la section -->
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between mb-6">
       <div>
-        <h2 class="font-primary text-lg text-[#003366] mb-1">Votre Modèle Personnalisé</h2>
-        <p class="font-secondary text-gray-600 text-xs">Fabrication Française</p>
+        <h2 class="font-secondary text-xl font-medium text-gray-900 mb-1">Finalisation</h2>
+        <p class="font-secondary text-sm text-gray-500">Nommez et validez votre création</p>
       </div>
-      <div class="text-[#003366] font-secondary font-bold text-base">
-        {price}
+      <div class="bg-gray-50 px-3 py-2 rounded-lg">
+        <span class="text-gray-900 font-secondary font-semibold text-lg">{price}</span>
       </div>
     </div>
 
-    <!-- Barre de séparation -->
-    <div class="h-px bg-gray-200 mb-4"></div>
-
     <!-- Section Nom du Modèle -->
-    <div class="mb-4">
-      <h3 class="font-secondary font-semibold text-[#003366] mb-3">Nom du Modèle</h3>
-      <input 
-        type="text" 
-        id="model-name"
-        placeholder="Nommer votre création..."
-        class="w-full h-12 px-4 rounded-[14px] border-2 border-gray-200 bg-white font-secondary text-gray-700 focus:border-[#003366] focus:outline-none transition-colors duration-300"
-        maxlength="30"
-      />
-      <p class="text-xs text-gray-500 mt-1 font-secondary">Maximum 30 caractères</p>
+    <div class="mb-8">
+      <h3 class="font-secondary font-medium text-gray-900 mb-4">Nom du modèle</h3>
+      <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+        <input 
+          type="text" 
+          id="model-name"
+          placeholder="Ma création personnalisée..."
+          class="w-full h-12 px-4 rounded-lg border border-gray-300 bg-white font-secondary text-gray-900 placeholder-gray-400 focus:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-100 transition-all duration-200"
+          maxlength="30"
+        />
+        <p class="text-xs text-gray-500 mt-2 font-secondary">Maximum 30 caractères</p>
+      </div>
     </div>
 
     <!-- Résumé de la Configuration -->
-    <div class="mb-4">
-      <h3 class="font-secondary font-semibold text-[#003366] mb-3">Résumé de Votre Configuration</h3>
-      <div class="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
+    <div class="mb-8">
+      <h3 class="font-secondary font-medium text-gray-900 mb-4">Résumé de votre configuration</h3>
+      <div class="bg-gray-50 rounded-xl border border-gray-200 p-6 space-y-4">
         
         <!-- Matériau -->
-        <div class="flex justify-between items-center">
-          <span class="font-secondary text-sm text-gray-600">Matériau</span>
-          <span class="font-secondary text-sm font-medium" id="summary-material">Acétate Artisanal</span>
+        <div class="flex justify-between items-center py-2">
+          <div class="flex items-center gap-3">
+            <div class="w-6 h-6 bg-amber-100 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313L12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313L12 21.75l-2.25-1.313M12 21.75V19.5m0 2.25l2.25-1.313M12 21.75l-2.25-1.313" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <span class="font-secondary text-sm text-gray-600">Matériau</span>
+          </div>
+          <span class="font-secondary text-sm font-semibold text-gray-900" id="summary-material">Plastique</span>
         </div>
         
         <!-- Couleur Monture -->
-        <div class="flex justify-between items-center">
-          <span class="font-secondary text-sm text-gray-600">Couleur Monture</span>
+        <div class="flex justify-between items-center py-2">
+          <div class="flex items-center gap-3">
+            <div class="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <span class="font-secondary text-sm text-gray-600">Couleur monture</span>
+          </div>
           <div class="flex items-center gap-2">
-            <div class="w-4 h-4 rounded-full border border-gray-300" id="summary-frame-color" style="background-color: #000000;"></div>
-            <span class="font-secondary text-sm font-medium" id="summary-frame-color-name">Noir</span>
+            <div class="w-4 h-4 rounded border border-gray-300" id="summary-frame-color" style="background-color: #2563eb;"></div>
+            <span class="font-secondary text-sm font-semibold text-gray-900" id="summary-frame-color-name">Bleu océan</span>
           </div>
         </div>
         
         <!-- Couleur Branches -->
-        <div class="flex justify-between items-center">
-          <span class="font-secondary text-sm text-gray-600">Couleur Branches</span>
+        <div class="flex justify-between items-center py-2">
+          <div class="flex items-center gap-3">
+            <div class="w-6 h-6 bg-purple-100 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M4.5 12.75l6 6 9-13.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3 12h3m0 0l3-3m-3 3l3 3" stroke="currentColor" stroke-width="1"/>
+                <path d="M18 12h3m0 0l-3-3m3 3l-3 3" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </div>
+            <span class="font-secondary text-sm text-gray-600">Couleur branches</span>
+          </div>
           <div class="flex items-center gap-2">
-            <div class="w-4 h-4 rounded-full border border-gray-300" id="summary-branch-color" style="background-color: #000000;"></div>
-            <span class="font-secondary text-sm font-medium" id="summary-branch-color-name">Noir</span>
+            <div class="w-4 h-4 rounded border border-gray-300" id="summary-branch-color" style="background-color: #2563eb;"></div>
+            <span class="font-secondary text-sm font-semibold text-gray-900" id="summary-branch-color-name">Bleu océan</span>
+          </div>
+        </div>
+        
+        <!-- Couleur Verres -->
+        <div class="flex justify-between items-center py-2">
+          <div class="flex items-center gap-3">
+            <div class="w-6 h-6 bg-cyan-100 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M12 9v6" stroke="currentColor" stroke-width="1"/>
+                <path d="M9 12h6" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </div>
+            <span class="font-secondary text-sm text-gray-600">Couleur verres</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded border border-gray-300" id="summary-lens-color" style="background-color: transparent;"></div>
+            <span class="font-secondary text-sm font-semibold text-gray-900" id="summary-lens-color-name">Transparent</span>
           </div>
         </div>
         
         <!-- Dimensions -->
-        <div class="flex justify-between items-center">
-          <span class="font-secondary text-sm text-gray-600">Dimensions</span>
-          <span class="font-secondary text-sm font-medium" id="summary-dimensions">Largeur: 52mm, Pont: 18mm</span>
+        <div class="flex justify-between items-center py-2">
+          <div class="flex items-center gap-3">
+            <div class="w-6 h-6 bg-emerald-100 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <span class="font-secondary text-sm text-gray-600">Dimensions</span>
+          </div>
+          <span class="font-secondary text-sm font-semibold text-gray-900" id="summary-dimensions">52mm × 18mm</span>
         </div>
       </div>
     </div>
@@ -85,25 +133,17 @@ const { price = "249€" } = Astro.props;
 
   </div>
 
-  <!-- Boutons de navigation et prix (toujours visibles) -->
-  <div class="bg-gray-50 border-t border-gray-200 p-4">
+  <!-- Boutons de navigation (toujours visibles) -->
+  <div class="bg-white border-t border-gray-100 p-6">
     <div class="flex justify-between items-center">
-      <!-- Bouton Précédent -->
-      <button id="prev-step" class="flex items-center gap-2 text-[#003366] font-secondary transition-colors hover:text-[#830000]">
+      <button id="prev-step" class="flex items-center gap-2 text-gray-600 font-secondary font-medium transition-all duration-200 hover:text-gray-900 focus:outline-none">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Précédent
       </button>
       
-      <!-- Prix final au centre -->
-      <div class="text-center">
-        <p class="font-secondary text-xs text-gray-600">Prix final</p>
-        <p class="font-secondary text-lg font-bold text-[#003366]" id="final-price">{price}</p>
-      </div>
-      
-      <!-- Bouton Ajouter au panier -->
-      <button id="add-to-cart" class="flex h-10 px-3 items-center shrink-0 self-stretch rounded-[14px] border-none cursor-pointer transition-colors duration-300 text-white font-medium font-secondary bg-[#003366] hover:bg-[#830000]">
+      <button id="add-to-cart" class="flex h-10 px-6 items-center rounded-lg bg-gray-900 text-white font-secondary font-medium transition-all duration-200 hover:bg-gray-800 hover:shadow-md">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
         </svg>
@@ -127,22 +167,28 @@ const { price = "249€" } = Astro.props;
     const summaryFrameColorName = document.querySelector('#summary-frame-color-name');
     const summaryBranchColor = document.querySelector('#summary-branch-color') as HTMLElement;
     const summaryBranchColorName = document.querySelector('#summary-branch-color-name');
+    const summaryLensColor = document.querySelector('#summary-lens-color') as HTMLElement;
+    const summaryLensColorName = document.querySelector('#summary-lens-color-name');
     const summaryDimensions = document.querySelector('#summary-dimensions');
 
     // Données de configuration (mises à jour en temps réel)
     let configurationData = {
       nom_modele: '',
       id_materiau: 1,
-      materiau_nom: 'Acétate Artisanal',
-      couleur_monture: '#000000',
-      couleur_monture_nom: 'Noir',
-      couleur_branches: '#000000',
-      couleur_branches_nom: 'Noir',
+      materiau_nom: 'Plastique',
+      couleur_monture: '#2563eb',
+      couleur_monture_nom: 'Bleu océan',
+      couleur_branches: '#2563eb',
+      couleur_branches_nom: 'Bleu océan',
       couleur_verres: 'transparent',
+      couleur_verres_nom: 'Transparent',
       largeur_pont: 18,
       taille_verres: 52,
       price: 249
     };
+
+    // Exposer configurationData globalement pour l'Assistant IA
+    (window as any).configurationData = configurationData;
 
     // Fonction pour mettre à jour le résumé de configuration
     function updateConfigurationSummary() {
@@ -160,8 +206,14 @@ const { price = "249€" } = Astro.props;
         summaryBranchColorName.textContent = configurationData.couleur_branches_nom;
       }
       
+      if (summaryLensColor && summaryLensColorName) {
+        summaryLensColor.style.backgroundColor = configurationData.couleur_verres === 'transparent' ? 'rgba(255,255,255,0.8)' : configurationData.couleur_verres;
+        summaryLensColor.style.border = configurationData.couleur_verres === 'transparent' ? '1px dashed #d1d5db' : '1px solid #d1d5db';
+        summaryLensColorName.textContent = configurationData.couleur_verres_nom;
+      }
+      
       if (summaryDimensions) {
-        summaryDimensions.textContent = `Largeur: ${configurationData.taille_verres}mm, Pont: ${configurationData.largeur_pont}mm`;
+        summaryDimensions.textContent = `${configurationData.taille_verres}mm × ${configurationData.largeur_pont}mm`;
       }
     }
 
@@ -174,11 +226,14 @@ const { price = "249€" } = Astro.props;
       
       // Mapping des couleurs vers les noms
       const colorNames = {
-        '#000000': 'Noir',
-        '#b45309': 'Marron',
-        '#003366': 'Bleu marine',
-        '#830000': 'Rouge bordeaux',
-        '#15803d': 'Vert'
+        '#2563eb': 'Bleu océan',
+        '#7c3aed': 'Violet moderne',
+        '#059669': 'Vert émeraude',
+        '#dc2626': 'Rouge cerise',
+        '#ea580c': 'Orange mandarine',
+        '#0891b2': 'Cyan tropical',
+        '#4338ca': 'Indigo profond',
+        '#374151': 'Gris anthracite'
       };
       
       configurationData.couleur_monture_nom = colorNames[color as keyof typeof colorNames] || 'Couleur personnalisée';
@@ -193,12 +248,14 @@ const { price = "249€" } = Astro.props;
       configurationData.couleur_branches = color;
       
       const colorNames = {
-        '#000000': 'Noir',
-        '#b45309': 'Marron',
-        '#003366': 'Bleu marine',
-        '#830000': 'Rouge bordeaux',
-        '#15803d': 'Vert',
-        '#9333ea': 'Violet'
+        '#2563eb': 'Bleu océan',
+        '#7c3aed': 'Violet moderne',
+        '#059669': 'Vert émeraude',
+        '#dc2626': 'Rouge cerise',
+        '#ea580c': 'Orange mandarine',
+        '#0891b2': 'Cyan tropical',
+        '#4338ca': 'Indigo profond',
+        '#374151': 'Gris anthracite'
       };
       
       configurationData.couleur_branches_nom = colorNames[color as keyof typeof colorNames] || 'Couleur personnalisée';
@@ -231,10 +288,24 @@ const { price = "249€" } = Astro.props;
         'yellow': '#eab308',
         'pink': '#ec4899'
       };
+
+      const lensColorDisplayNames = {
+        'transparent': 'Transparent',
+        'gray': 'Gris clair',
+        'dark-gray': 'Gris foncé',
+        'brown': 'Marron',
+        'green': 'Vert',
+        'blue': 'Bleu',
+        'yellow': 'Jaune',
+        'pink': 'Rose'
+      };
       
       // Stocker la couleur des verres
       configurationData.couleur_verres = lensColorNames[color as keyof typeof lensColorNames] || 'transparent';
-      console.log('Couleur des verres mise à jour:', configurationData.couleur_verres);
+      configurationData.couleur_verres_nom = lensColorDisplayNames[color as keyof typeof lensColorDisplayNames] || 'Transparent';
+      
+      updateConfigurationSummary();
+      console.log('Couleur des verres mise à jour:', configurationData.couleur_verres, configurationData.couleur_verres_nom);
     });
 
     // Écouter les événements de changement de dimensions

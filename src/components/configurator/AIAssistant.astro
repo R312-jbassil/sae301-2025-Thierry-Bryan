@@ -1,0 +1,529 @@
+---
+// Composant Assistant IA - Interface simplifiée avec application directe
+export interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<!-- Interface IA moderne et minimaliste -->
+<div id="ai-assistant-popup" class="fixed left-0 bottom-0 z-50 hidden">
+  <div class="bg-white shadow-xl w-96 rounded-t-2xl border border-gray-200">
+    
+    <!-- Header minimaliste -->
+    <div class="border-b border-gray-100 p-4">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-[#003366] rounded-lg flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="0.8">
+              <!-- Tête principale du robot -->
+              <rect x="5" y="6" width="14" height="12" rx="3" stroke="currentColor" fill="currentColor" opacity="0.1"/>
+              
+              <!-- Visière/Interface -->
+              <rect x="6" y="7.5" width="12" height="6" rx="1.5" stroke="currentColor" fill="none"/>
+              
+              <!-- Yeux/Capteurs -->
+              <circle cx="9" cy="10.5" r="1.2" fill="currentColor"/>
+              <circle cx="15" cy="10.5" r="1.2" fill="currentColor"/>
+              <!-- Reflets technologiques (plus fins) -->
+              <circle cx="9.4" cy="10.1" r="0.25" fill="white" opacity="0.9"/>
+              <circle cx="15.4" cy="10.1" r="0.25" fill="white" opacity="0.9"/>
+              
+              <!-- Antennes/Connecteurs -->
+              <line x1="8" y1="6" x2="8" y2="4" stroke="currentColor"/>
+              <line x1="16" y1="6" x2="16" y2="4" stroke="currentColor"/>
+              <circle cx="8" cy="4" r="0.8" fill="currentColor"/>
+              <circle cx="16" cy="4" r="0.8" fill="currentColor"/>
+              
+              <!-- Base/Cou du robot -->
+              <rect x="9" y="18" width="6" height="2" rx="1" stroke="currentColor" fill="currentColor" opacity="0.3"/>
+              
+              <!-- Indicateur de statut (simplifié) -->
+              <circle cx="12" cy="8.5" r="0.3" fill="#00ff00" opacity="0.8"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-secondary text-base font-semibold text-gray-900">Assistant IA</h2>
+            <p class="font-secondary text-xs text-gray-500">Configuration intelligente</p>
+          </div>
+        </div>
+        <button id="close-ai-popup" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="p-6 space-y-4">
+      <!-- Présentation de l'IA -->
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="font-secondary text-sm text-gray-700 leading-relaxed">
+          Je peux modifier instantanément vos lunettes selon vos demandes. Changez les couleurs, les matériaux, 
+          les dimensions ou le style général en décrivant simplement ce que vous voulez.
+        </p>
+      </div>
+
+      <!-- Exemples discrets -->
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-block bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-secondary text-gray-600">
+          "lunettes noires"
+        </span>
+        <span class="inline-block bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-secondary text-gray-600">
+          "plus grandes"
+        </span>
+        <span class="inline-block bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-secondary text-gray-600">
+          "style moderne"
+        </span>
+      </div>
+
+      <div id="success-message" class="hidden">
+        <div class="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center space-x-2">
+          <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="text-sm font-secondary text-green-700">Modifications appliquées avec succès</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone de saisie en bas -->
+    <div class="border-t border-gray-100 p-4">
+      <div class="flex items-end space-x-3">
+        <div class="flex-1">
+          <textarea
+            id="ai-prompt"
+            class="w-full p-3 border border-gray-200 rounded-lg resize-none focus:ring-2 focus:ring-[#003366] focus:border-transparent font-secondary text-sm placeholder-gray-400 transition-all"
+            rows="2"
+            placeholder="Décrivez vos modifications..."
+            maxlength="300"
+          ></textarea>
+        </div>
+        <button
+          id="apply-ai-modification"
+          class="w-10 h-10 bg-[#003366] hover:bg-[#002244] text-white rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+          title="Appliquer les modifications"
+        >
+          <svg id="send-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+          <svg id="loading-icon" class="w-4 h-4 animate-spin hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bouton Assistant IA minimaliste -->
+<button
+  id="open-ai-assistant"
+  class={`fixed bottom-4 left-4 w-14 h-14 bg-[#003366] hover:bg-[#002244] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50 flex items-center justify-center ${className}`}
+  title="Assistant IA"
+>
+  <svg class="w-11 h-11" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="0.8">
+    <!-- Tête principale du robot -->
+    <rect x="5" y="6" width="14" height="12" rx="3" stroke="currentColor" fill="currentColor" opacity="0.1"/>
+    
+    <!-- Visière/Interface -->
+    <rect x="6" y="7.5" width="12" height="6" rx="1.5" stroke="currentColor" fill="none"/>
+    
+    <!-- Yeux/Capteurs -->
+    <circle cx="9" cy="10.5" r="1.2" fill="currentColor"/>
+    <circle cx="15" cy="10.5" r="1.2" fill="currentColor"/>
+    <!-- Reflets technologiques (plus fins) -->
+    <circle cx="9.4" cy="10.1" r="0.25" fill="white" opacity="0.9"/>
+    <circle cx="15.4" cy="10.1" r="0.25" fill="white" opacity="0.9"/>
+    
+    <!-- Antennes/Connecteurs -->
+    <line x1="8" y1="6" x2="8" y2="4" stroke="currentColor"/>
+    <line x1="16" y1="6" x2="16" y2="4" stroke="currentColor"/>
+    <circle cx="8" cy="4" r="0.8" fill="currentColor"/>
+    <circle cx="16" cy="4" r="0.8" fill="currentColor"/>
+    
+    <!-- Base/Cou du robot -->
+    <rect x="9" y="18" width="6" height="2" rx="1" stroke="currentColor" fill="currentColor" opacity="0.3"/>
+    
+    <!-- Indicateur de statut (simplifié) -->
+    <circle cx="12" cy="8.5" r="0.3" fill="#00ff00" opacity="0.8"/>
+  </svg>
+</button>
+
+<script>
+  // Éléments du DOM
+  const openButton = document.getElementById('open-ai-assistant');
+  const closeButton = document.getElementById('close-ai-popup');
+  const popup = document.getElementById('ai-assistant-popup');
+  const promptTextarea = document.getElementById('ai-prompt') as HTMLTextAreaElement;
+  const modifyButton = document.getElementById('apply-ai-modification') as HTMLButtonElement;
+  const sendIcon = document.getElementById('send-icon');
+  const loadingIcon = document.getElementById('loading-icon');
+  const successMessage = document.getElementById('success-message');
+
+  // Ouvrir le popup
+  openButton?.addEventListener('click', () => {
+    popup?.classList.remove('hidden');
+    popup?.classList.add('block');
+    
+    // Focus sur le textarea
+    setTimeout(() => {
+      promptTextarea?.focus();
+    }, 100);
+    
+    // Cacher le bouton quand le popup est ouvert
+    if (openButton) openButton.style.display = 'none';
+  });
+
+  // Fermer le popup
+  closeButton?.addEventListener('click', () => {
+    closeAIPopup();
+  });
+
+  // Fonction pour fermer le popup
+  function closeAIPopup() {
+    popup?.classList.add('hidden');
+    popup?.classList.remove('block');
+    
+    // Réafficher le bouton
+    if (openButton) openButton.style.display = 'flex';
+    
+    // Réinitialiser l'interface
+    if (promptTextarea) promptTextarea.value = '';
+    if (modifyButton) modifyButton.disabled = false;
+    if (sendIcon) sendIcon.classList.remove('hidden');
+    if (loadingIcon) loadingIcon.classList.add('hidden');
+    successMessage?.classList.add('hidden');
+  }
+
+  // Appliquer les modifications directement
+  modifyButton?.addEventListener('click', async () => {
+    const prompt = promptTextarea?.value.trim();
+    if (!prompt) {
+      promptTextarea?.focus();
+      return;
+    }
+
+    await applyAIModifications(prompt);
+  });
+
+  // Fonction principale : appliquer les modifications IA
+  async function applyAIModifications(prompt: string) {
+    if (!modifyButton) return;
+    
+    // État de chargement
+    modifyButton.disabled = true;
+    sendIcon?.classList.add('hidden');
+    loadingIcon?.classList.remove('hidden');
+    successMessage?.classList.add('hidden');
+
+    try {
+      // Récupérer la configuration actuelle
+      const configData = getCurrentConfiguration();
+      
+      console.log('� Application des modifications IA:', prompt);
+      
+      // Appeler l'API
+      const response = await fetch('/api/modifyGlasses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [{ role: 'user', content: prompt }],
+          configuration: configData
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.configuration) {
+        console.log('🔍 Debug - Configuration reçue de l\'IA:', data.configuration);
+        
+        // Appliquer la nouvelle configuration au configurateur
+        applyConfigurationToConfigurator(data.configuration);
+
+        // Afficher le succès
+        loadingIcon?.classList.add('hidden');
+        sendIcon?.classList.remove('hidden');
+        modifyButton.disabled = false;
+        successMessage?.classList.remove('hidden');
+        
+        // Fermer automatiquement après 2 secondes
+        setTimeout(() => {
+          closeAIPopup();
+          showNotification('Lunettes modifiées par l\'IA !', 'success');
+        }, 2000);
+        
+      } else {
+        throw new Error(data.error || 'Erreur lors de la modification');
+      }
+
+    } catch (error) {
+      console.error('❌ Erreur IA:', error);
+      
+      // Afficher l'erreur
+      loadingIcon?.classList.add('hidden');
+      sendIcon?.classList.remove('hidden');
+      
+      // Réactiver après 3 secondes
+      setTimeout(() => {
+        modifyButton.disabled = false;
+      }, 3000);
+      
+      showNotification(`Erreur IA: ${error instanceof Error ? error.message : 'Erreur inconnue'}`, 'error');
+    }
+  }
+
+  // Récupérer la configuration actuelle
+  function getCurrentConfiguration() {
+    const configData = (window as any).configurationData || {};
+    return {
+      couleur_monture: configData.couleur_monture || '#000000',
+      couleur_branches: configData.couleur_branches || '#000000', 
+      couleur_verres: configData.couleur_verres || 'transparent',
+      taille_verres: configData.taille_verres || 52,
+      largeur_pont: configData.largeur_pont || 18
+    };
+  }
+
+  // Appliquer la configuration de l'IA au configurateur
+  function applyConfigurationToConfigurator(newConfig: any) {
+    console.log('🎨 Application de la nouvelle configuration:', newConfig);
+
+    // Mettre à jour les variables CSS pour les couleurs
+    if (newConfig.couleur_monture) {
+      document.documentElement.style.setProperty('--frame-color', newConfig.couleur_monture);
+      console.log('✅ Couleur monture appliquée:', newConfig.couleur_monture);
+    }
+
+    if (newConfig.couleur_branches) {
+      document.documentElement.style.setProperty('--branch-color', newConfig.couleur_branches);
+      console.log('✅ Couleur branches appliquée:', newConfig.couleur_branches);
+    }
+
+    if (newConfig.couleur_verres) {
+      const isTransparent = newConfig.couleur_verres === 'transparent';
+      document.documentElement.style.setProperty('--lens-color', 
+        isTransparent ? 'rgba(255,255,255,0.05)' : newConfig.couleur_verres);
+      document.documentElement.style.setProperty('--lens-opacity', 
+        isTransparent ? '0.15' : '0.7');
+      console.log('✅ Couleur verres appliquée:', newConfig.couleur_verres);
+    }
+
+    // Mettre à jour les contrôles du configurateur si ils existent
+    updateConfiguratorControls(newConfig);
+
+    // Mettre à jour la configuration globale
+    if ((window as any).configurationData) {
+      Object.assign((window as any).configurationData, newConfig);
+      console.log('✅ Configuration globale mise à jour');
+    }
+
+    // Déclencher un événement pour notifier les autres composants
+    window.dispatchEvent(new CustomEvent('configurationUpdated', { 
+      detail: { newConfiguration: newConfig } 
+    }));
+  }
+
+  // Mettre à jour les contrôles visuels du configurateur
+  function updateConfiguratorControls(newConfig: any) {
+    console.log('🎯 Mise à jour des contrôles avec:', newConfig);
+
+    // Mettre à jour la couleur de monture (ConfigPanel.astro - data-color)
+    if (newConfig.couleur_monture) {
+      const frameColorBtn = document.querySelector(`[data-color="${newConfig.couleur_monture}"]`) as HTMLButtonElement;
+      if (frameColorBtn) {
+        console.log('✅ Clic simulé sur bouton monture:', newConfig.couleur_monture);
+        frameColorBtn.click();
+      } else {
+        console.log('⚠️ Bouton monture non trouvé pour:', newConfig.couleur_monture);
+        // Si couleur exacte non trouvée, chercher la plus proche
+        tryClickClosestColor('[data-color]', newConfig.couleur_monture);
+      }
+    }
+
+    // Mettre à jour la couleur des branches (BranchesConfigPanel.astro - data-branch-color)
+    if (newConfig.couleur_branches) {
+      const branchColorBtn = document.querySelector(`[data-branch-color="${newConfig.couleur_branches}"]`) as HTMLButtonElement;
+      if (branchColorBtn) {
+        console.log('✅ Clic simulé sur bouton branches:', newConfig.couleur_branches);
+        branchColorBtn.click();
+      } else {
+        console.log('⚠️ Bouton branches non trouvé pour:', newConfig.couleur_branches);
+        tryClickClosestColor('[data-branch-color]', newConfig.couleur_branches);
+      }
+    }
+
+    // Mettre à jour la couleur des verres (VerresConfigPanel.astro - data-lens-color)
+    if (newConfig.couleur_verres) {
+      if (newConfig.couleur_verres === 'transparent') {
+        const transparentBtn = document.querySelector(`[data-lens-color="transparent"]`) as HTMLButtonElement;
+        if (transparentBtn) {
+          console.log('✅ Clic simulé sur verres transparents');
+          transparentBtn.click();
+        }
+      } else {
+        // L'IA doit maintenant retourner directement les noms de couleur (gray, blue, etc.)
+        const lensColorBtn = document.querySelector(`[data-lens-color="${newConfig.couleur_verres}"]`) as HTMLButtonElement;
+        if (lensColorBtn) {
+          console.log('✅ Clic simulé sur verres:', newConfig.couleur_verres);
+          lensColorBtn.click();
+        } else {
+          console.log('⚠️ Bouton verres non trouvé pour:', newConfig.couleur_verres);
+          // Essayer avec une couleur par défaut
+          const defaultBtn = document.querySelector(`[data-lens-color="blue"]`) as HTMLButtonElement;
+          if (defaultBtn) {
+            console.log('🔄 Fallback vers verres bleus');
+            defaultBtn.click();
+          }
+        }
+      }
+    }
+
+    // Mettre à jour les dimensions (DimensionsConfigPanel.astro - sliders)
+    if (newConfig.taille_verres) {
+      const lensWidthSlider = document.querySelector('#lens-width') as HTMLInputElement;
+      if (lensWidthSlider) {
+        lensWidthSlider.value = newConfig.taille_verres.toString();
+        lensWidthSlider.dispatchEvent(new Event('input'));
+        console.log('✅ Taille verres mise à jour:', newConfig.taille_verres);
+      }
+    }
+
+    if (newConfig.largeur_pont) {
+      const bridgeWidthSlider = document.querySelector('#bridge-width') as HTMLInputElement;
+      if (bridgeWidthSlider) {
+        bridgeWidthSlider.value = newConfig.largeur_pont.toString();
+        bridgeWidthSlider.dispatchEvent(new Event('input'));
+        console.log('✅ Largeur pont mise à jour:', newConfig.largeur_pont);
+      }
+    }
+
+    // Mettre à jour le matériau (ConfigPanel.astro - material-btn)
+    if (newConfig.materiau) {
+      const materialButtons = document.querySelectorAll('.material-btn') as NodeListOf<HTMLButtonElement>;
+      const materialMap: {[key: string]: string} = {
+        'acetate': '1',
+        'metal': '2', 
+        'bois': '3'
+      };
+      
+      const materialId = materialMap[newConfig.materiau.toLowerCase()];
+      if (materialId) {
+        const materialBtn = document.querySelector(`[data-material-id="${materialId}"]`) as HTMLButtonElement;
+        if (materialBtn) {
+          materialBtn.click();
+          console.log('✅ Matériau mis à jour:', newConfig.materiau);
+        }
+      }
+    }
+
+    // Petite pause pour laisser les événements se propager
+    setTimeout(() => {
+      console.log('✅ Configuration mise à jour terminée');
+    }, 100);
+  }
+
+  // Fonction pour cliquer sur la couleur la plus proche si exacte non trouvée
+  function tryClickClosestColor(selector: string, targetColor: string) {
+    const buttons = document.querySelectorAll(selector) as NodeListOf<HTMLButtonElement>;
+    if (buttons.length > 0) {
+      // Pour l'instant, cliquer sur le premier bouton disponible
+      console.log('🔄 Clic sur couleur par défaut');
+      buttons[0].click();
+    }
+  }
+
+  // Mettre à jour les éléments de résumé de configuration
+  function updateSummaryElements(newConfig: any) {
+    if (newConfig.couleur_monture) {
+      const frameColorDiv = document.getElementById('summary-frame-color');
+      if (frameColorDiv) {
+        frameColorDiv.style.backgroundColor = newConfig.couleur_monture;
+      }
+    }
+
+    if (newConfig.couleur_branches) {
+      const branchColorDiv = document.getElementById('summary-branch-color');
+      if (branchColorDiv) {
+        branchColorDiv.style.backgroundColor = newConfig.couleur_branches;
+      }
+    }
+  }
+
+  // Fonction de notification
+  function showNotification(message: string, type: 'success' | 'error') {
+    if ((window as any).showNotification) {
+      (window as any).showNotification(message, type);
+    } else {
+      // Fallback
+      const color = type === 'success' ? '#10b981' : '#ef4444';
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${color};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 9999;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  }
+
+  // Support des raccourcis clavier
+  promptTextarea?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      modifyButton?.click();
+    }
+  });
+
+  // Fermer avec Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !popup?.classList.contains('hidden')) {
+      closeAIPopup();
+    }
+  });
+</script>
+
+<style>
+  /* Styles minimalistes pour l'assistant IA */
+  #ai-assistant-popup {
+    transition: all 0.2s ease-out;
+  }
+
+  /* Scrollbar personnalisé si nécessaire */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+</style>
