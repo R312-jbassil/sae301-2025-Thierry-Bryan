@@ -20,32 +20,22 @@ migrate((app) => {
       },
       {
         "cascadeDelete": false,
-        "collectionId": "pbc_3620903986",
+        "collectionId": "_pb_users_auth_",
         "hidden": false,
-        "id": "relation2196385364",
+        "id": "relation4220051791",
         "maxSelect": 1,
         "minSelect": 0,
-        "name": "commande_id",
+        "name": "utilisateur_id",
         "presentable": false,
         "required": false,
         "system": false,
         "type": "relation"
       },
       {
-        "hidden": false,
-        "id": "_clone_wXnG",
-        "name": "date_commande",
-        "onCreate": true,
-        "onUpdate": false,
-        "presentable": false,
-        "system": false,
-        "type": "autodate"
-      },
-      {
         "exceptDomains": null,
         "hidden": false,
-        "id": "_clone_URAM",
-        "name": "client_email",
+        "id": "_clone_yK6b",
+        "name": "email",
         "onlyDomains": null,
         "presentable": false,
         "required": true,
@@ -55,10 +45,10 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_Xl8C",
+        "id": "_clone_FEEm",
         "max": 255,
         "min": 0,
-        "name": "client_name",
+        "name": "name",
         "pattern": "",
         "presentable": false,
         "primaryKey": false,
@@ -67,76 +57,64 @@ migrate((app) => {
         "type": "text"
       },
       {
-        "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_wuSP",
-        "max": 0,
-        "min": 0,
-        "name": "nom_modele",
-        "pattern": "",
+        "id": "number3296125494",
+        "max": null,
+        "min": null,
+        "name": "nombre_commandes",
+        "onlyInt": false,
         "presentable": false,
-        "primaryKey": false,
         "required": false,
         "system": false,
-        "type": "text"
+        "type": "number"
       },
       {
-        "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_OuCU",
-        "max": 0,
-        "min": 0,
-        "name": "couleur_monture",
-        "pattern": "",
+        "id": "number886001582",
+        "max": null,
+        "min": null,
+        "name": "lunettes_creees",
+        "onlyInt": false,
         "presentable": false,
-        "primaryKey": false,
         "required": false,
         "system": false,
-        "type": "text"
+        "type": "number"
       },
       {
-        "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_Bzj8",
-        "max": 0,
-        "min": 0,
-        "name": "couleur_branches",
-        "pattern": "",
+        "id": "json1421237099",
+        "maxSize": 1,
+        "name": "derniere_creation",
         "presentable": false,
-        "primaryKey": false,
         "required": false,
         "system": false,
-        "type": "text"
+        "type": "json"
       },
       {
-        "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_vtkC",
-        "max": 0,
-        "min": 0,
-        "name": "materiau",
-        "pattern": "",
+        "id": "json1840412770",
+        "maxSize": 1,
+        "name": "derniere_commande",
         "presentable": false,
-        "primaryKey": false,
         "required": false,
         "system": false,
-        "type": "text"
+        "type": "json"
       }
     ],
-    "id": "pbc_1214799020",
+    "id": "pbc_90033419",
     "indexes": [],
     "listRule": null,
-    "name": "commandes_details",
+    "name": "activite_utilisateurs",
     "system": false,
     "type": "view",
     "updateRule": null,
-    "viewQuery": "SELECT \n  (ROW_NUMBER() OVER()) as id,\n  c.id as commande_id,\n  c.created as date_commande,\n  u.email as client_email,\n  u.name as client_name,\n  l.nom_modele,\n  l.couleur_monture,\n  l.couleur_branches,\n  m.libelle as materiau\nFROM Commande c\nLEFT JOIN users u ON c.id_utilisateur = u.id  \nLEFT JOIN Lunette l ON c.id_lunette = l.id\nLEFT JOIN Materiau m ON l.id_materiau = m.id\nORDER BY c.created DESC",
+    "viewQuery": "SELECT \n  (ROW_NUMBER() OVER()) as id,\n  u.id as utilisateur_id,\n  u.email,\n  u.name,\n  COUNT(DISTINCT c.id) as nombre_commandes,\n  COUNT(DISTINCT l.id) as lunettes_creees,\n  MAX(l.created) as derniere_creation,\n  MAX(c.created) as derniere_commande\nFROM users u\nLEFT JOIN Commande c ON u.id = c.id_utilisateur\nLEFT JOIN Lunette l ON u.id = l.id_utilisateur\nGROUP BY u.id, u.email, u.name\nHAVING COUNT(DISTINCT l.id) > 0 OR COUNT(DISTINCT c.id) > 0\nORDER BY lunettes_creees DESC, nombre_commandes DESC",
     "viewRule": null
   });
 
   return app.save(collection);
 }, (app) => {
-  const collection = app.findCollectionByNameOrId("pbc_1214799020");
+  const collection = app.findCollectionByNameOrId("pbc_90033419");
 
   return app.delete(collection);
 })

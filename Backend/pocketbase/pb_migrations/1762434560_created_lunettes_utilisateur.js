@@ -21,7 +21,7 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_KVaj",
+        "id": "_clone_aPBf",
         "max": 0,
         "min": 0,
         "name": "nom_modele",
@@ -35,7 +35,7 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_Jv7Q",
+        "id": "_clone_RdR7",
         "max": 0,
         "min": 0,
         "name": "couleur_monture",
@@ -49,7 +49,7 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_oC6o",
+        "id": "_clone_iVm7",
         "max": 0,
         "min": 0,
         "name": "couleur_branches",
@@ -63,7 +63,7 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_KNkX",
+        "id": "_clone_oVcw",
         "max": 0,
         "min": 0,
         "name": "couleur_verres",
@@ -76,7 +76,7 @@ migrate((app) => {
       },
       {
         "hidden": false,
-        "id": "_clone_mxEU",
+        "id": "_clone_l1Wg",
         "max": null,
         "min": null,
         "name": "taille_verres",
@@ -88,7 +88,7 @@ migrate((app) => {
       },
       {
         "hidden": false,
-        "id": "_clone_8pPE",
+        "id": "_clone_xcTR",
         "max": null,
         "min": null,
         "name": "largeur_pont",
@@ -100,7 +100,7 @@ migrate((app) => {
       },
       {
         "hidden": false,
-        "id": "_clone_JY35",
+        "id": "_clone_zNqZ",
         "name": "created",
         "onCreate": true,
         "onUpdate": false,
@@ -110,7 +110,7 @@ migrate((app) => {
       },
       {
         "hidden": false,
-        "id": "_clone_EJeW",
+        "id": "_clone_3t5s",
         "name": "updated",
         "onCreate": true,
         "onUpdate": true,
@@ -121,7 +121,7 @@ migrate((app) => {
       {
         "exceptDomains": null,
         "hidden": false,
-        "id": "_clone_LD6B",
+        "id": "_clone_HDm6",
         "name": "utilisateur_email",
         "onlyDomains": null,
         "presentable": false,
@@ -132,7 +132,7 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_FV2c",
+        "id": "_clone_ESZJ",
         "max": 255,
         "min": 0,
         "name": "utilisateur_name",
@@ -146,7 +146,7 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_gqPI",
+        "id": "_clone_cH9P",
         "max": 0,
         "min": 0,
         "name": "materiau_nom",

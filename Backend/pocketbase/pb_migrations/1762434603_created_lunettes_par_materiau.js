@@ -21,7 +21,7 @@ migrate((app) => {
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_EsLc",
+        "id": "_clone_rmZg",
         "max": 0,
         "min": 0,
         "name": "materiau",

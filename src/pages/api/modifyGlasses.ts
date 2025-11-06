@@ -210,7 +210,7 @@ function parseUserRequestLocally(userMessage: string): any {
     config.largeur_pont = 16;
   }
 
-  console.log('🤖 Configuration locale générée:', config);
+  console.log('🎲 Configuration locale générée:', config);
   return config;
 }
 
@@ -221,7 +221,7 @@ export const POST: APIRoute = async ({ request }) => {
     requestData = await request.json();
     const { messages, configuration } = requestData;
     
-    console.log('🤖 Requête de modification IA reçue:', { messages, configuration });
+    console.log('🎯 Requête de modification IA reçue:', { messages, configuration });
 
     // Configuration OpenRouter
     const API_KEY = import.meta.env.OR_TOKEN;
@@ -325,7 +325,7 @@ Réponds UNIQUEMENT avec du JSON valide, sans texte supplémentaire.`
     const data = await response.json();
     const aiMessage = data.choices[0].message.content;
 
-    console.log('🤖 Réponse IA brute:', aiMessage);
+    console.log('🎯 Réponse IA brute:', aiMessage);
 
     // Extraire la configuration JSON de la réponse
     let newConfiguration = {};

@@ -223,7 +223,7 @@ const { class: className = "" } = Astro.props;
       // Récupérer la configuration actuelle
       const configData = getCurrentConfiguration();
       
-      console.log('� Application des modifications IA:', prompt);
+      console.log('🤖 Application des modifications IA:', prompt);
       
       // Appeler l'API
       const response = await fetch('/api/modifyGlasses', {
@@ -238,7 +238,7 @@ const { class: className = "" } = Astro.props;
       const data = await response.json();
 
       if (data.success && data.configuration) {
-        console.log('🔍 Debug - Configuration reçue de l\'IA:', data.configuration);
+        console.log('🎯 Debug - Configuration reçue de l\'IA:', data.configuration);
         
         // Appliquer la nouvelle configuration au configurateur
         applyConfigurationToConfigurator(data.configuration);
@@ -289,7 +289,7 @@ const { class: className = "" } = Astro.props;
 
   // Appliquer la configuration de l'IA au configurateur
   function applyConfigurationToConfigurator(newConfig: any) {
-    console.log('🎨 Application de la nouvelle configuration:', newConfig);
+    console.log('🎯 Application de la nouvelle configuration:', newConfig);
 
     // Mettre à jour les variables CSS pour les couleurs
     if (newConfig.couleur_monture) {
@@ -328,7 +328,7 @@ const { class: className = "" } = Astro.props;
 
   // Mettre à jour les contrôles visuels du configurateur
   function updateConfiguratorControls(newConfig: any) {
-    console.log('🎯 Mise à jour des contrôles avec:', newConfig);
+    console.log('🎛️ Mise à jour des contrôles avec:', newConfig);
 
     // Mettre à jour la couleur de monture (ConfigPanel.astro - data-color)
     if (newConfig.couleur_monture) {

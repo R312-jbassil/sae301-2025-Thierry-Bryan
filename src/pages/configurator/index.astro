@@ -364,5 +364,124 @@ import AIAssistant from "../../components/configurator/AIAssistant.astro";
 
     // Exposer la fonction de notification globalement
     (window as any).showNotification = showNotification;
+
+    // =============================================================================
+    // SYSTÈME D'ASSISTANT IA
+    // =============================================================================
+
+    let isAIOpen = false;
+    let isAILoading = false;
+    let aiMessages: Array<{ type: 'user' | 'assistant'; content: string; timestamp: Date }> = [];
+
+    // Fonctions pour gérer l'Assistant IA
+    function toggleAI() {
+      isAIOpen = !isAIOpen;
+      updateAIDisplay();
+    }
+
+    function closeAI() {
+      isAIOpen = false;
+      updateAIDisplay();
+    }
+
+    function updateAIDisplay() {
+      const aiContainer = document.querySelector('[data-ai-container]');
+      if (aiContainer) {
+        if (isAIOpen) {
+          aiContainer.classList.remove('hidden');
+        } else {
+          aiContainer.classList.add('hidden');
+        }
+      }
+    }
+
+    async function submitAIMessage(message: string) {
+      if (isAILoading) return;
+
+      // Ajouter le message utilisateur
+      aiMessages.push({
+        type: 'user',
+        content: message,
+        timestamp: new Date()
+      });
+
+      isAILoading = true;
+      updateAIMessages();
+
+      try {
+        // Appeler l'API AI directement
+        const response = await fetch('/api/modifyGlasses', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: message,
+            currentConfig: {
+              frameColor: '#1a1a1a',
+              templeColor: '#1a1a1a',
+              lensColor: '#87CEEB',
+              material: 'acetate',
+              lensType: 'clear',
+              frameWidth: 140,
+              templeLength: 140,
+              bridgeWidth: 16
+            }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erreur API: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        // Ajouter la réponse de l'IA
+        aiMessages.push({
+          type: 'assistant',
+          content: result.explanation,
+          timestamp: new Date()
+        });
+
+        // Appliquer la configuration
+        if (result.config && Object.keys(result.config).length > 0) {
+          window.dispatchEvent(new CustomEvent('aiConfigUpdate', {
+            detail: result.config
+          }));
+
+          showNotification('🤖 Configuration appliquée par l\'IA !', 'success');
+        }
+
+      } catch (error) {
+        console.error('Erreur IA:', error);
+        
+        aiMessages.push({
+          type: 'assistant',
+          content: 'Désolé, je n\'ai pas pu traiter votre demande. Pouvez-vous reformuler ?',
+          timestamp: new Date()
+        });
+
+        showNotification('❌ Erreur de l\'assistant IA', 'error');
+      }
+
+      isAILoading = false;
+      updateAIMessages();
+    }
+
+    function updateAIMessages() {
+      // Cette fonction sera appelée pour mettre à jour l'affichage des messages
+      // Pour l'instant, on émet juste un événement
+      window.dispatchEvent(new CustomEvent('aiMessagesUpdate', {
+        detail: {
+          messages: aiMessages,
+          isLoading: isAILoading
+        }
+      }));
+    }
+
+    // Exposer les fonctions globalement
+    (window as any).closeAIAssistant = closeAI;
+    (window as any).submitAIMessage = submitAIMessage;
+    (window as any).toggleAI = toggleAI;
   });
 </script>
