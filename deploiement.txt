@@ -1,0 +1,7 @@
+URL APP: https://tavue.bryan-thierry.fr
+LINK GITHUB: https://github.com/R312-jbassil/sae301-2025-Thierry-Bryan.git
+
+PocketBase Admin:
+- URL: https://tavue.bryan-thierry.fr/_/
+- Login/email: bryan.thierry28@gmail.com
+- Mot de passe: 1234567890

@@ -286,7 +286,7 @@ import AIAssistant from "../../components/configurator/AIAssistant.astro";
           couleur_verres: String(lunetteConfig.couleur_verres || 'transparent'),
           couleur_monture: String(lunetteConfig.couleur_monture || '#000000'),
           couleur_branches: String(lunetteConfig.couleur_branches || '#000000'),
-          id_utilisateur: String(pb.authStore.record?.id || ''),
+          id_utilisateur: pb.authStore.record?.id,
           id_materiau: String(validMaterialId || '')
         };
 
@@ -295,7 +295,6 @@ import AIAssistant from "../../components/configurator/AIAssistant.astro";
         console.log('  - nom_modele:', typeof lunetteData.nom_modele, lunetteData.nom_modele);
         console.log('  - largeur_pont:', typeof lunetteData.largeur_pont, lunetteData.largeur_pont);
         console.log('  - taille_verres:', typeof lunetteData.taille_verres, lunetteData.taille_verres);
-        console.log('  - id_utilisateur:', typeof lunetteData.id_utilisateur, lunetteData.id_utilisateur);
         console.log('  - id_materiau:', typeof lunetteData.id_materiau, lunetteData.id_materiau);
 
         // Enregistrer dans PocketBase

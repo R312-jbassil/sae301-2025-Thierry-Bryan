@@ -1,0 +1,4 @@
+PocketBase Admin:
+- URL: https://tavue.bryan-thierry.fr/_/
+- Login/email: bryan.thierry28@gmail.com
+- Mot de passe: 1234567890
