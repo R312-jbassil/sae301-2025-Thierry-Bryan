@@ -1,0 +1,293 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout 
+  title="Mon Profil - TaVue" 
+  description="Gérez vos informations personnelles et préférences TaVue"
+  noindex={true}
+>
+  <main class="min-h-screen bg-gray-50 py-8">
+    <div class="container mx-auto px-6 max-w-4xl">
+      
+      <!-- En-tête -->
+      <header class="text-center mb-8">
+        <h1 class="font-primary text-3xl lg:text-4xl text-bleu mb-2">Mon Profil</h1>
+        <p class="text-gray-600">Gérez vos informations personnelles</p>
+      </header>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        
+        <!-- Résumé utilisateur -->
+        <aside class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            
+            <!-- Photo de profil et infos principales -->
+            <div class="p-6 text-center border-b border-gray-100">
+              <div id="profile-avatar" class="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden bg-bleu flex items-center justify-center text-white text-lg font-medium">
+                <span class="font-secondary" id="user-initials">--</span>
+              </div>
+              <h3 class="font-secondary text-lg font-medium text-gray-900 mb-1" id="profile-name">Chargement...</h3>
+              <p class="text-sm text-gray-500 font-secondary" id="profile-email">--</p>
+            </div>
+
+            <!-- Statistiques rapides -->
+            <div class="p-4">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-600">Lunettes créées</span>
+                  <span class="font-semibold text-bleu" id="sidebar-lunettes-count">0</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-600">Membre depuis</span>
+                  <span class="font-semibold text-gray-900" id="sidebar-member-since">--</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions rapides -->
+            <div class="p-4 border-t border-gray-100">
+              <div class="space-y-2">
+                <a href="/panier" class="flex items-center gap-3 p-2 text-gray-700 hover:text-bleu hover:bg-gray-50 rounded-lg transition-colors text-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                  </svg>
+                  Mes Lunettes
+                </a>
+                <a href="/configurator" class="flex items-center gap-3 p-2 text-gray-700 hover:text-bleu hover:bg-gray-50 rounded-lg transition-colors text-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                  Configurateur
+                </a>
+                <button id="logout-btn" class="flex items-center gap-3 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full text-left text-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Déconnexion
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="lg:col-span-2">
+          
+          <!-- Informations personnelles -->
+          <section id="infos" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <header class="mb-6">
+              <h2 class="font-primary text-xl text-bleu mb-2">Informations personnelles</h2>
+              <p class="text-gray-600 text-sm">Vos données sont sécurisées et ne sont jamais partagées.</p>
+            </header>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              
+              <!-- Email -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Email</label>
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p class="text-gray-900" id="user-email">Chargement...</p>
+                </div>
+              </div>
+
+              <!-- Username -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p class="text-gray-900" id="user-username">Chargement...</p>
+                </div>
+              </div>
+
+              <!-- Nom -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Nom</label>
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p class="text-gray-900" id="user-name">Chargement...</p>
+                </div>
+              </div>
+
+              <!-- Membre depuis -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Membre depuis</label>
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p class="text-gray-900" id="user-created">Chargement...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bouton édition (pour plus tard) -->
+            <div class="mt-6 pt-4 border-t border-gray-100">
+              <button class="btn-french-outline text-sm" disabled>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Modifier les informations
+                <span class="text-xs text-gray-500 ml-2">(Bientôt disponible)</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Statistiques -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <header class="mb-6">
+              <h2 class="font-primary text-xl text-bleu mb-2">Activité</h2>
+              <p class="text-gray-600 text-sm">Votre activité sur TaVue.</p>
+            </header>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              
+              <!-- Lunettes créées -->
+              <div class="text-center p-4 bg-bleu bg-opacity-5 rounded-lg border border-bleu border-opacity-10">
+                <div class="text-2xl font-bold text-bleu mb-1" id="lunettes-count">-</div>
+                <p class="text-sm text-gray-600">Lunettes créées</p>
+              </div>
+
+              <!-- Jours d'activité -->
+              <div class="text-center p-4 bg-rouge bg-opacity-5 rounded-lg border border-rouge border-opacity-10">
+                <div class="text-2xl font-bold text-rouge mb-1" id="days-active">-</div>
+                <p class="text-sm text-gray-600">Jours d'activité</p>
+              </div>
+
+              <!-- Statut -->
+              <div class="text-center p-4 bg-green-50 rounded-lg border border-green-100 col-span-2 md:col-span-1">
+                <div class="text-2xl text-green-600 mb-1">
+                  <svg class="w-6 h-6 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <p class="text-sm text-gray-600">Compte vérifié</p>
+              </div>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import pb from '../../utils/pb';
+  import { getUserLunettes } from '../../utils/lunettes';
+
+  // Vérifier l'authentification et rediriger si nécessaire
+  function checkAuth() {
+    if (!pb.authStore.isValid) {
+      window.location.href = '/auth';
+      return false;
+    }
+    return true;
+  }
+
+  // Charger les données utilisateur
+  async function loadUserData() {
+    if (!checkAuth()) return;
+
+    const user = pb.authStore.record;
+    if (!user) return;
+
+    // Générer les initiales
+    const name = user.name || user.username || user.email || '';
+    const initials = name.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) || 'U';
+
+    // Remplir les informations utilisateur principales
+    const emailEl = document.getElementById('user-email');
+    const usernameEl = document.getElementById('user-username');
+    const nameEl = document.getElementById('user-name');
+    const createdEl = document.getElementById('user-created');
+    const daysActiveEl = document.getElementById('days-active');
+
+    // Remplir la sidebar
+    const profileName = document.getElementById('profile-name');
+    const profileEmail = document.getElementById('profile-email');
+    const userInitials = document.getElementById('user-initials');
+    const sidebarMemberSince = document.getElementById('sidebar-member-since');
+
+    if (emailEl) emailEl.textContent = user.email || 'Non renseigné';
+    if (usernameEl) usernameEl.textContent = user.username || 'Non renseigné';
+    if (nameEl) nameEl.textContent = user.name || 'Non renseigné';
+    
+    // Sidebar
+    if (profileName) profileName.textContent = user.name || user.username || 'Utilisateur';
+    if (profileEmail) profileEmail.textContent = user.email || 'Non renseigné';
+    if (userInitials) userInitials.textContent = initials;
+    
+    if (createdEl && user.created) {
+      const createdDate = new Date(user.created);
+      createdEl.textContent = createdDate.toLocaleDateString('fr-FR', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+    }
+
+    if (daysActiveEl && user.created) {
+      const days = Math.ceil((Date.now() - new Date(user.created).getTime()) / (1000 * 60 * 60 * 24));
+      daysActiveEl.textContent = days.toString();
+    }
+
+    // Sidebar member since (format court)
+    if (sidebarMemberSince && user.created) {
+      const createdDate = new Date(user.created);
+      sidebarMemberSince.textContent = createdDate.toLocaleDateString('fr-FR', { 
+        year: 'numeric', 
+        month: 'short' 
+      });
+    }
+  }
+
+  // Charger les statistiques dynamiquement
+  async function loadStats() {
+    try {
+      const lunettes = await getUserLunettes();
+      const count = lunettes.length;
+      
+      // Mettre à jour le compteur principal
+      const lunetteCount = document.getElementById('lunettes-count');
+      if (lunetteCount) {
+        lunetteCount.textContent = count.toString();
+      }
+
+      // Mettre à jour le compteur de la sidebar
+      const sidebarCount = document.getElementById('sidebar-lunettes-count');
+      if (sidebarCount) {
+        sidebarCount.textContent = count.toString();
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des statistiques:', error);
+    }
+  }
+
+  // Gestion de la déconnexion
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        pb.authStore.clear();
+        window.location.href = '/auth';
+      }
+    });
+  }
+
+  // Navigation fluide
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = (anchor as HTMLAnchorElement).getAttribute('href');
+      if (href) {
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+
+  // Charger les données au load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadUserData();
+    loadStats();
+  });
+</script>

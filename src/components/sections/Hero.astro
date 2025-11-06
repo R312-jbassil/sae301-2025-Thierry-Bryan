@@ -30,19 +30,19 @@ const {
 
 <!-- SEO: Structure sémantique avec schema.org -->
 <section 
-  class="hero-french h-[calc(100vh-60px)] flex items-center" 
+  class="hero-french min-h-[calc(100vh-60px)] flex items-center py-12" 
   itemscope 
   itemtype="https://schema.org/Organization"
 >
   <div class="container mx-auto px-6">
-    <div class="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-12 gap-8 items-center max-w-6xl mx-auto">
       
-      <!-- Contenu principal - Simplifié -->
-      <div class="space-y-6">
+      <!-- Contenu principal - 7 colonnes sur desktop -->
+      <div class="lg:col-span-7 space-y-6">
         <!-- Titres -->
         <div class="space-y-3">
           <h1 
-            class="font-primary text-4xl lg:text-5xl text-bleu leading-tight"
+            class="font-primary text-4xl lg:text-5xl xl:text-6xl text-bleu leading-tight"
             itemprop="name"
           >
             {title}
@@ -55,21 +55,21 @@ const {
           <div class="divider-french w-16 h-1"></div>
         </div>
 
-        <!-- Description courte -->
+        <!-- Description -->
         <p 
-          class="text-body lg:text-base text-noir leading-relaxed"
+          class="text-base lg:text-lg text-noir leading-relaxed max-w-md"
           itemprop="description"
         >
-          Configurateur 3D, matériaux premium, livraison rapide.
+          {description}
         </p>
 
-        <!-- Boutons plus petits et horizontaux -->
-        <div class="flex gap-3">
+        <!-- Boutons -->
+        <div class="flex flex-col sm:flex-row gap-3">
           {primaryButton && (
             <Button 
               variant={primaryButton.variant} 
               href={primaryButton.href}
-              class="btn-french text-sm px-4 py-2"
+              class="btn-french"
             >
               {primaryButton.text}
             </Button>
@@ -79,7 +79,7 @@ const {
             <Button 
               variant={secondaryButton.variant} 
               href={secondaryButton.href}
-              class="btn-french-outline text-sm px-4 py-2"
+              class="btn-french-outline"
             >
               {secondaryButton.text}
             </Button>
@@ -87,24 +87,24 @@ const {
         </div>
       </div>
 
-      <!-- Image taille normale -->
+      <!-- Image compacte - 5 colonnes sur desktop -->
       {imageSlot && (
-        <div class="relative">
-          <div class="aspect-square bg-gris-clair rounded-2xl flex items-center justify-center border border-gris">
-            <!-- Placeholder pour votre image -->
+        <div class="lg:col-span-5 relative">
+          <div class="aspect-4/3 lg:aspect-square bg-gris-clair rounded-2xl flex items-center justify-center border border-gris max-w-md mx-auto">
+            <!-- Placeholder optimisé -->
             <div class="text-center space-y-3">
-              <div class="w-16 h-16 mx-auto bg-bleu bg-opacity-10 rounded-full flex items-center justify-center">
-                <span class="text-2xl">👓</span>
+              <div class="w-12 h-12 mx-auto bg-bleu bg-opacity-10 rounded-full flex items-center justify-center">
+                <span class="text-xl">👓</span>
               </div>
-              <p class="text-body text-noir opacity-60">
-                Votre image ici
+              <p class="text-sm text-noir opacity-60">
+                Lunettes TaVue
               </p>
             </div>
           </div>
           
           <!-- Décoration minimaliste -->
-          <div class="absolute -top-4 -right-4 w-8 h-8 bg-rouge bg-opacity-10 rounded-full"></div>
-          <div class="absolute -bottom-4 -left-4 w-6 h-6 bg-bleu bg-opacity-10 rounded-full"></div>
+          <div class="absolute -top-2 -right-2 w-6 h-6 bg-rouge bg-opacity-10 rounded-full"></div>
+          <div class="absolute -bottom-2 -left-2 w-4 h-4 bg-bleu bg-opacity-10 rounded-full"></div>
         </div>
       )}
     </div>
