@@ -26,7 +26,11 @@ pnpm-debug.log*
 pocketbase/*.md
 pocketbase/pocketbase
 
-# PocketBase data files
+# PocketBase data files - CONTIENNENT DES SECRETS !
+Backend/pocketbase/pb_data/
 Backend/pocketbase/pb_data/storage/
 Backend/pocketbase/pb_data/logs/
 Backend/pocketbase/pb_data/**/*.attrs
+Backend/pocketbase/pb_data/**/*.db
+Backend/pocketbase/pb_data/**/*.db-shm
+Backend/pocketbase/pb_data/**/*.db-wal
