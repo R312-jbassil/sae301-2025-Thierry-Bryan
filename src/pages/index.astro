@@ -2,32 +2,13 @@
 // filepath: src/pages/index.astro
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/ui/Button.astro";
+import Hero from "../components/sections/Hero.astro";
 ---
 
 <Layout title="TaVue - Accueil">
   <div class="min-h-screen bg-base-100">
     <!-- Hero Section -->
-    <section class="hero-french py-20">
-      <div class="container mx-auto px-6 text-center">
-        <h1 class="text-6xl mb-6">TaVue</h1>
-        <p class="text-xl max-w-2xl mx-auto mb-8">
-          Créez vos lunettes sur-mesure avec notre configurateur français
-          moderne
-        </p>
-
-        <!-- Divider français -->
-        <div class="divider-french w-32 mx-auto mb-8"></div>
-
-        <!-- Boutons avec notre composant français -->
-        <div
-          class="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <Button variant="fixed"> Commencer la configuration </Button>
-          <Button variant="flexible"> Découvrir nos modèles </Button>
-        </div>
-      </div>
-    </section>
-
+   <Hero />
     <!-- Cards de démonstration -->
     <section class="py-16 px-6">
       <div class="container mx-auto">

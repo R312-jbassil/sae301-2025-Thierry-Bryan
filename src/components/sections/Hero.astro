@@ -1,0 +1,112 @@
+---
+import Button from "../ui/Button.astro";
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  primaryButton?: {
+    text: string;
+    href?: string;
+    variant?: "fixed" | "flexible";
+  };
+  secondaryButton?: {
+    text: string;
+    href?: string;
+    variant?: "fixed" | "flexible";
+  };
+  imageSlot?: boolean;
+}
+
+const {
+  title = "TaVue",
+  subtitle = "L'élégance française à votre vue",
+  description = "Créez vos lunettes sur-mesure avec notre configurateur 3D. Design français moderne, matériaux premium et livraison rapide.",
+  primaryButton = { text: "Configurer mes lunettes", href: "/configurator", variant: "fixed" },
+  secondaryButton = { text: "Découvrir", href: "#services", variant: "flexible" },
+  imageSlot = true,
+} = Astro.props;
+---
+
+<!-- SEO: Structure sémantique avec schema.org -->
+<section 
+  class="hero-french h-[calc(100vh-60px)] flex items-center" 
+  itemscope 
+  itemtype="https://schema.org/Organization"
+>
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+      
+      <!-- Contenu principal - Simplifié -->
+      <div class="space-y-6">
+        <!-- Titres -->
+        <div class="space-y-3">
+          <h1 
+            class="font-primary text-4xl lg:text-5xl text-bleu leading-tight"
+            itemprop="name"
+          >
+            {title}
+          </h1>
+          
+          <h2 class="font-primary text-lg lg:text-xl text-rouge font-normal">
+            {subtitle}
+          </h2>
+          
+          <div class="divider-french w-16 h-1"></div>
+        </div>
+
+        <!-- Description courte -->
+        <p 
+          class="text-body lg:text-base text-noir leading-relaxed"
+          itemprop="description"
+        >
+          Configurateur 3D, matériaux premium, livraison rapide.
+        </p>
+
+        <!-- Boutons plus petits et horizontaux -->
+        <div class="flex gap-3">
+          {primaryButton && (
+            <Button 
+              variant={primaryButton.variant} 
+              href={primaryButton.href}
+              class="btn-french text-sm px-4 py-2"
+            >
+              {primaryButton.text}
+            </Button>
+          )}
+          
+          {secondaryButton && (
+            <Button 
+              variant={secondaryButton.variant} 
+              href={secondaryButton.href}
+              class="btn-french-outline text-sm px-4 py-2"
+            >
+              {secondaryButton.text}
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <!-- Image taille normale -->
+      {imageSlot && (
+        <div class="relative">
+          <div class="aspect-square bg-gris-clair rounded-2xl flex items-center justify-center border border-gris">
+            <!-- Placeholder pour votre image -->
+            <div class="text-center space-y-3">
+              <div class="w-16 h-16 mx-auto bg-bleu bg-opacity-10 rounded-full flex items-center justify-center">
+                <span class="text-2xl">👓</span>
+              </div>
+              <p class="text-body text-noir opacity-60">
+                Votre image ici
+              </p>
+            </div>
+          </div>
+          
+          <!-- Décoration minimaliste -->
+          <div class="absolute -top-4 -right-4 w-8 h-8 bg-rouge bg-opacity-10 rounded-full"></div>
+          <div class="absolute -bottom-4 -left-4 w-6 h-6 bg-bleu bg-opacity-10 rounded-full"></div>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
